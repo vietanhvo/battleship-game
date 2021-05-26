@@ -32,13 +32,13 @@ export default class Board {
       var yIncrease = 0;
       for (var j = 0; j < this.#height; j++) {
         this.#board[i][j] = new Square(
-          50 + xIncrease,
+          40 + xIncrease,
           50 + yIncrease,
           this.#phaser
         );
-        yIncrease += 50;
+        yIncrease += config.square.height;
       }
-      xIncrease += 50;
+      xIncrease += config.square.width;
     }
   }
 
