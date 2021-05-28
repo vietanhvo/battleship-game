@@ -32,6 +32,8 @@ export default class Board {
       var yIncrease = 0;
       for (var j = 0; j < this.#height; j++) {
         this.#board[i][j] = new Square(
+          i,
+          j,
           40 + xIncrease,
           50 + yIncrease,
           this.#phaser
@@ -54,14 +56,39 @@ export default class Board {
     return this.#board;
   }
 
-  getSquare(x, y) {
-    return this.#board[x][y];
+  getSquareSelecting() {
+    var selectingSqr;
+    this.#board.map((row) => {
+      return row.map((cell) => {
+        if (cell.getSelect()) return selectingSqr = cell;
+      });
+    });
+    return selectingSqr;
   }
 
-  render() {
+  create() {
     for (var i = 0; i < this.#width; i++) {
       for (var j = 0; j < this.#height; j++) {
-        this.#board[i][j].render();
+        this.#board[i][j].create();
+      }
+    }
+  }
+
+  renderSetup() {
+    // Get the ship is selecting
+    //var selectedShip = listOfShips.filter(ship => ship.getSelect())
+    //var length;
+    //if (selectedShip.length) {
+    //length = selectedShip[0].getLength();
+    //};
+
+    // Get the square which is selected
+    var selectingSqr = this.getSquareSelecting();
+
+    for (var i = 0; i < this.#width; i++) {
+      for (var j = 0; j < this.#height; j++) {
+        // Render each square
+        this.#board[i][j].renderSetup(selectingSqr);
       }
     }
   }

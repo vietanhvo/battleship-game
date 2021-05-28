@@ -27,7 +27,7 @@ export default class Game {
       this.#ships.push(
         new Ship(
           key,
-          value[0],
+          value,
           this.#phaser,
           config.phaser.width - config.ship.width / 2,
           increaseHeight
@@ -37,20 +37,65 @@ export default class Game {
     });
   }
 
-  run() {
-    this.#setupShip();
+  #setupShips(selectShip, selectSquare) {
+    const length = selectShip.getLength();
+    const xStart = selectSquare.getX();
+    const yStart = selectSquare.getY();
+
+    var arrSquareSetup = [];
+
+    // TODO: VERTICAL
+
+    // Setup HORIZONTAL
+    // Check valid in board first
+    if (xStart + length <= this.#board.getWidth()) {
+      // Check the select square array valid
+      for (var i = xStart; i < xStart + length; i++) {
+        const square = this.#board.getBoard()[i][yStart];
+        if (
+          square.getShip() &&
+          !selectShip.getPos().some((sqr) => sqr == square)
+        ) {
+          return;
+        }
+
+        arrSquareSetup.push(square);
+      }
+    }
+    // Remove the selected square before
+    this.#board.getSquareSelecting().setSelect(false);
+    // Remove the position setted before
+    selectShip.setPos(arrSquareSetup);
   }
 
-  // Only handle render now
-  #setupShip() {}
+  getShipSelecting() {
+    var selectingShip;
+    this.#ships.map((ship) => {
+      if (ship.getSelect()) return (selectingShip = ship);
+    });
+    return selectingShip;
+  }
 
-  render() {
-    this.#board.render();
+  create() {
+    this.#board.create();
     // render ship
-    this.#ships.map((ship) => ship.render());
+    this.#ships.map((ship) => ship.create());
   }
 
-  renderUpdate() {
-    this.#ships.map((ship) => ship.renderUpdate(this.#ships));
+  renderSetup() {
+    var selectingShip = this.getShipSelecting();
+    var selectingSqr = this.#board.getSquareSelecting();
+    // Handle when select square before select ship
+    if (selectingSqr && !selectingShip) {
+      selectingSqr.setSelect(false);
+    }
+
+    this.#board.renderSetup();
+    this.#ships.map((ship) => ship.render(selectingShip));
+
+    // Handle all thing setup board
+    if (selectingShip && selectingSqr) {
+      this.#setupShips(selectingShip, selectingSqr);
+    }
   }
 }

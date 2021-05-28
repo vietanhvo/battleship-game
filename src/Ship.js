@@ -24,7 +24,7 @@ export default class Ship {
     // x y for ship panel
     this.#x = x;
     this.#y = y;
-    //this.#pos = pos;
+    this.#pos = [];
     this.#loadImg();
   }
 
@@ -61,8 +61,14 @@ export default class Ship {
     return this.#select;
   }
 
-  setPosition(listOfSquare) {
+  setPos(listOfSquare) {
+    this.#pos.map((sqr) => sqr.setShip(false));
     this.#pos = listOfSquare;
+    listOfSquare.map((sqr) => sqr.setShip(true));
+  }
+
+  getPos() {
+    return this.#pos;
   }
 
   getLength() {
@@ -78,7 +84,7 @@ export default class Ship {
   }
 
   // Create in phaser
-  render() {
+  create() {
     this.#panel = this.#phaser.add
       .sprite(this.#x, this.#y, this.#name)
       .setInteractive()
@@ -86,16 +92,14 @@ export default class Ship {
   }
 
   // Handle render update for panel of select ships
-  renderUpdate(listOfShips) {
+  render(selectingShip) {
     this.#panel.on("pointerdown", () => {
       this.setSelect(true);
       // ships are not selected must be setSelect to false
-      listOfShips.map((innerShip) => {
-        if (innerShip.getName() !== this.#name) {
-          innerShip.getPanel().setFrame(1);
-          innerShip.setSelect(false);
-        }
-      });
+      if (selectingShip && selectingShip.getName() !== this.#name) {
+        selectingShip.getPanel().setFrame(1);
+        selectingShip.setSelect(false);
+      }
     });
     if (this.getSelect()) {
       this.#panel.setFrame(2);

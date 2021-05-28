@@ -37,11 +37,10 @@ function create() {
     "background"
   );
 
-  // render square img
-  battleship.render();
+  // create game
+  battleship.create();
 }
 
 function update() {
-  battleship.renderUpdate();
-  //battleship.run();
+  battleship.renderSetup();
 }
