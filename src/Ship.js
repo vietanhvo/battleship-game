@@ -84,23 +84,29 @@ export default class Ship {
   }
 
   // Create in phaser
-  create() {
+  create(listOfShips) {
     this.#panel = this.#phaser.add
       .sprite(this.#x, this.#y, this.#name)
       .setInteractive()
       .setFrame(1);
-  }
-
-  // Handle render update for panel of select ships
-  render(selectingShip) {
     this.#panel.on("pointerdown", () => {
-      this.setSelect(true);
       // ships are not selected must be setSelect to false
+      var selectingShip;
+      listOfShips.map((ship) => {
+        if (ship.getSelect()) return (selectingShip = ship);
+      });
+
       if (selectingShip && selectingShip.getName() !== this.#name) {
         selectingShip.getPanel().setFrame(1);
         selectingShip.setSelect(false);
       }
+
+      this.setSelect(true);
     });
+  }
+
+  // Handle render update for panel of select ships
+  update4Setup() {
     if (this.getSelect()) {
       this.#panel.setFrame(2);
     } else {

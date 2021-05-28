@@ -69,17 +69,20 @@ export default class Square {
     this.#img = this.#phaser.add
       .sprite(this.#xPos, this.#yPos, config.square.name)
       .setInteractive();
-  }
-
-  renderSetup(selecting) {
-    var square = this.#img;
-    square.on("pointerdown", () => {
-      if (selecting) {
-        //selecting.getImg().clearTint();
-        selecting.setSelect(false)
-      };
+    this.#img.on("pointerdown", () => {
       this.setSelect(true);
     });
+  }
+
+  update4Setup() {
+    var square = this.#img;
+    //square.on("pointerdown", () => {
+      //if (selecting) {
+        ////selecting.getImg().clearTint();
+        //selecting.setSelect(false);
+      //}
+      //this.setSelect(true);
+    //});
 
     // render if ship setup on this Square
     if (this.#ship) {

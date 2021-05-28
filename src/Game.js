@@ -1,5 +1,6 @@
 import Board from "./Board.js";
 import Ship from "./Ship.js";
+import DirectionSwt from "./controller_UI/DirectionSwt.js";
 
 import { config } from "../config.js";
 
@@ -8,6 +9,7 @@ export default class Game {
   #board;
   // Array of ships
   #ships;
+  #directionSwt;
   #phaser;
 
   constructor(phaser) {
@@ -17,6 +19,8 @@ export default class Game {
     // Initialize ships
     this.#ships = [];
     this.#initializeShips();
+    // Preload UI
+    this.#directionSwt = new DirectionSwt(phaser);
   }
 
   // Initialize total of ships
@@ -79,10 +83,11 @@ export default class Game {
   create() {
     this.#board.create();
     // render ship
-    this.#ships.map((ship) => ship.create());
+    this.#ships.map((ship) => ship.create(this.#ships));
+    this.#directionSwt.create();
   }
 
-  renderSetup() {
+  update4Setup() {
     var selectingShip = this.getShipSelecting();
     var selectingSqr = this.#board.getSquareSelecting();
     // Handle when select square before select ship
@@ -90,8 +95,9 @@ export default class Game {
       selectingSqr.setSelect(false);
     }
 
-    this.#board.renderSetup();
-    this.#ships.map((ship) => ship.render(selectingShip));
+    this.#board.update4Setup();
+    this.#ships.map((ship) => ship.update4Setup());
+    this.#directionSwt.update();
 
     // Handle all thing setup board
     if (selectingShip && selectingSqr) {

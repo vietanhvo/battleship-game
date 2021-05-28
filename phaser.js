@@ -42,5 +42,5 @@ function create() {
 }
 
 function update() {
-  battleship.renderSetup();
+  battleship.update4Setup();
 }

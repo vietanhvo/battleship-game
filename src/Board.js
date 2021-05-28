@@ -60,7 +60,7 @@ export default class Board {
     var selectingSqr;
     this.#board.map((row) => {
       return row.map((cell) => {
-        if (cell.getSelect()) return selectingSqr = cell;
+        if (cell.getSelect()) return (selectingSqr = cell);
       });
     });
     return selectingSqr;
@@ -69,26 +69,19 @@ export default class Board {
   create() {
     for (var i = 0; i < this.#width; i++) {
       for (var j = 0; j < this.#height; j++) {
-        this.#board[i][j].create();
+        this.#board[i][j].create(() => this.getSquareSelecting());
       }
     }
   }
 
-  renderSetup() {
-    // Get the ship is selecting
-    //var selectedShip = listOfShips.filter(ship => ship.getSelect())
-    //var length;
-    //if (selectedShip.length) {
-    //length = selectedShip[0].getLength();
-    //};
-
+  update4Setup() {
     // Get the square which is selected
     var selectingSqr = this.getSquareSelecting();
 
     for (var i = 0; i < this.#width; i++) {
       for (var j = 0; j < this.#height; j++) {
         // Render each square
-        this.#board[i][j].renderSetup(selectingSqr);
+        this.#board[i][j].update4Setup(selectingSqr);
       }
     }
   }
