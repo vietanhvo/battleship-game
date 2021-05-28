@@ -41,33 +41,49 @@ export default class Game {
     });
   }
 
-  #setupShips(selectShip, selectSquare) {
+  #setupShips(selectShip, selectSquare, direction) {
     const length = selectShip.getLength();
     const xStart = selectSquare.getX();
     const yStart = selectSquare.getY();
 
+    // Remove the selected square before
+    selectSquare.setSelect(false);
     var arrSquareSetup = [];
 
     // TODO: VERTICAL
+    if (direction) {
+      if (yStart + length <= this.#board.getHeight()) {
+        for (var i = yStart; i < yStart + length; i++) {
+          const square = this.#board.getBoard()[xStart][i];
+          if (
+            square.getShip() &&
+            !selectShip.getPos().some((sqr) => sqr == square)
+          ) {
+            return;
+          }
 
-    // Setup HORIZONTAL
-    // Check valid in board first
-    if (xStart + length <= this.#board.getWidth()) {
-      // Check the select square array valid
-      for (var i = xStart; i < xStart + length; i++) {
-        const square = this.#board.getBoard()[i][yStart];
-        if (
-          square.getShip() &&
-          !selectShip.getPos().some((sqr) => sqr == square)
-        ) {
-          return;
+          arrSquareSetup.push(square);
         }
+      }
+    } else {
+      // Setup HORIZONTAL
+      // Check valid in board first
+      if (xStart + length <= this.#board.getWidth()) {
+        // Check the select square array valid
+        for (var i = xStart; i < xStart + length; i++) {
+          const square = this.#board.getBoard()[i][yStart];
+          if (
+            square.getShip() &&
+            !selectShip.getPos().some((sqr) => sqr == square)
+          ) {
+            return;
+          }
 
-        arrSquareSetup.push(square);
+          arrSquareSetup.push(square);
+        }
       }
     }
-    // Remove the selected square before
-    this.#board.getSquareSelecting().setSelect(false);
+
     // Remove the position setted before
     selectShip.setPos(arrSquareSetup);
   }
@@ -101,7 +117,11 @@ export default class Game {
 
     // Handle all thing setup board
     if (selectingShip && selectingSqr) {
-      this.#setupShips(selectingShip, selectingSqr);
+      this.#setupShips(
+        selectingShip,
+        selectingSqr,
+        this.#directionSwt.getDirection()
+      );
     }
   }
 }
