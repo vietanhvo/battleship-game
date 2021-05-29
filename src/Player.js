@@ -12,10 +12,14 @@ export default class Player {
   }
 
   #initializeShips() {
+    // Create ships
     config.shipsArr.map((ship) => {
       const [key, value] = Object.entries(ship)[0];
       this.#ships.push(new Ship(key, value, this.#phaser));
     });
+
+    //Preload panel for the setup screen
+    this.#ships.map((ship) => ship.preloadPanel());
   }
 
   getShips() {
@@ -73,7 +77,7 @@ export default class Player {
   getPanelSelecting() {
     var selectingShip;
     this.#ships.map((ship) => {
-      if (ship.getSelect()) return (selectingShip = ship);
+      if (ship.getPanel().getSelect()) return (selectingShip = ship);
     });
     return selectingShip;
   }
