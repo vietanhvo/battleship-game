@@ -9,21 +9,16 @@ export default class Ship {
   #name;
   #length; // length of the board
   #phaser;
-  #x;
-  #y;
   #select;
   #pos; // Array[Square, Square, ...]. The coordianate of ship is belong to this Square
-  #boom; // true if all pos is shooted
+  #sink; // true if all pos is shooted
   #panel; // the panel for user choose to setup ships
 
-  constructor(name, length, phaser, x, y) {
+  constructor(name, length, phaser) {
     this.#phaser = phaser;
-    this.#boom = this.#select = false;
+    this.#sink = this.#select = false;
     this.#name = name;
     this.#length = length;
-    // x y for ship panel
-    this.#x = x;
-    this.#y = y;
     this.#pos = [];
     this.#loadImg();
   }
@@ -84,9 +79,9 @@ export default class Ship {
   }
 
   // Create in phaser
-  create(listOfShips) {
+  createPanel(listOfShips, x, y) {
     this.#panel = this.#phaser.add
-      .sprite(this.#x, this.#y, this.#name)
+      .sprite(x, y, this.#name)
       .setInteractive()
       .setFrame(1);
     this.#panel.on("pointerdown", () => {
