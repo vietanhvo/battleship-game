@@ -1,6 +1,7 @@
 import Board from "./Board.js";
 import Ship from "./Ship.js";
 import DirectionSwt from "./controller_UI/DirectionSwt.js";
+import StartBtn from "./controller_UI/StartBtn.js";
 
 import { config } from "../config.js";
 
@@ -9,8 +10,10 @@ export default class Game {
   #board;
   // Array of ships
   #ships;
-  #directionSwt;
   #phaser;
+
+  #directionSwt;
+  #startBtn;
 
   constructor(phaser) {
     this.#phaser = phaser;
@@ -21,6 +24,7 @@ export default class Game {
     this.#initializeShips();
     // Preload UI
     this.#directionSwt = new DirectionSwt(phaser);
+    this.#startBtn = new StartBtn(phaser);
   }
 
   // Initialize total of ships
@@ -100,7 +104,9 @@ export default class Game {
     this.#board.create();
     // render ship
     this.#ships.map((ship) => ship.create(this.#ships));
+
     this.#directionSwt.create();
+    this.#startBtn.create();
   }
 
   update4Setup() {
@@ -122,6 +128,11 @@ export default class Game {
         selectingSqr,
         this.#directionSwt.getDirection()
       );
+      // Check setup done or not
+      this.#ships.some((ship) => ship.getPos().length === 0)
+        ? this.#startBtn.setSetupDone(false)
+        : this.#startBtn.setSetupDone(true);
+      this.#startBtn.update();
     }
   }
 }
