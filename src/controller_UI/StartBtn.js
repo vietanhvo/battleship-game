@@ -50,5 +50,9 @@ export default class StartBtn {
     this.#container.on("pointerout", function () {
       bg.clearTint();
     });
+
+    this.#container.on("pointerdown", () => {
+      if (this.#setupDone) this.#phaser.scene.start("PlayScreen");
+    });
   }
 }

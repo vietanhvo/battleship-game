@@ -3,6 +3,57 @@ import Game from "./src/Game.js";
 
 import background from "url:./assets/sky.png";
 
+var battleship;
+
+class Background extends Phaser.Scene {
+  constructor() {
+    super("Background");
+  }
+
+  preload() {
+    this.load.image("background", background);
+  }
+
+  create() {
+    // Render background img
+    this.add.image(
+      config.phaser.width / 2,
+      config.phaser.height / 2,
+      "background"
+    );
+  }
+}
+
+class SetupScreen extends Phaser.Scene {
+  constructor() {
+    super({ key: "SetupScreen", active: true });
+  }
+
+  preload() {
+    // Game
+    battleship = new Game(this);
+  }
+
+  create() {
+    // create game
+    battleship.create();
+  }
+
+  update() {
+    battleship.update4Setup();
+  }
+}
+
+class PlayScreen extends Phaser.Scene {
+  constructor() {
+    super("PlayScreen");
+  }
+
+  preload() {}
+
+  create() {}
+}
+
 var phaserConfig = {
   type: Phaser.AUTO,
   scale: {
@@ -11,36 +62,7 @@ var phaserConfig = {
     width: config.phaser.width,
     height: config.phaser.height,
   },
-  scene: {
-    preload: preload,
-    create: create,
-    update: update,
-  },
+  scene: [Background, SetupScreen, PlayScreen],
 };
 
 var game = new Phaser.Game(phaserConfig);
-var battleship;
-
-function preload() {
-  // Load img
-  // background and board
-  this.load.image("background", background);
-  // Game
-  battleship = new Game(this);
-}
-
-function create() {
-  // Render background img
-  this.add.image(
-    config.phaser.width / 2,
-    config.phaser.height / 2,
-    "background"
-  );
-
-  // create game
-  battleship.create();
-}
-
-function update() {
-  battleship.update4Setup();
-}
