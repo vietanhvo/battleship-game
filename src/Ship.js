@@ -102,16 +102,17 @@ export default class Ship {
       }
 
       this.setSelect(true);
-    });
-  }
-
-  // Handle render update for panel of select ships
-  update4Setup() {
-    if (this.getSelect()) {
       this.#panel.setFrame(2);
-    } else {
-      this.#panel.on("pointerout", () => this.#panel.setFrame(1));
-      this.#panel.on("pointerover", () => this.#panel.setFrame(0));
-    }
+    });
+    this.#panel.on("pointerout", () => {
+      if (!this.#select) {
+        this.#panel.setFrame(1);
+      }
+    });
+    this.#panel.on("pointerover", () => {
+      if (!this.#select) {
+        this.#panel.setFrame(0);
+      }
+    });
   }
 }

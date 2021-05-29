@@ -38,10 +38,9 @@ export default class DirectionSwt {
       )
       .setInteractive()
       .setFrame(0);
-    this.#img.on("pointerdown", () => this.changeDirection(!this.#direction));
-  }
-
-  update() {
-    this.#direction ? this.#img.setFrame(1) : this.#img.setFrame(0);
+    this.#img.on("pointerdown", () => {
+      this.changeDirection(!this.#direction)
+      this.#direction ? this.#img.setFrame(1) : this.#img.setFrame(0);
+    });
   }
 }

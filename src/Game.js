@@ -118,8 +118,6 @@ export default class Game {
     }
 
     this.#board.update4Setup();
-    this.#ships.map((ship) => ship.update4Setup());
-    this.#directionSwt.update();
 
     // Handle all thing setup board
     if (selectingShip && selectingSqr) {
@@ -132,7 +130,6 @@ export default class Game {
       this.#ships.some((ship) => ship.getPos().length === 0)
         ? this.#startBtn.setSetupDone(false)
         : this.#startBtn.setSetupDone(true);
-      this.#startBtn.update();
     }
   }
 }

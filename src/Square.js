@@ -72,29 +72,15 @@ export default class Square {
     this.#img.on("pointerdown", () => {
       this.setSelect(true);
     });
+    this.#img.on("pointerover", () => {
+      if (!this.#ship) this.#img.setTint(0x44ff44);
+    });
+    this.#img.on("pointerout", () => {
+      if (!this.#ship) this.#img.clearTint();
+    });
   }
 
   update4Setup() {
-    var square = this.#img;
-    //square.on("pointerdown", () => {
-      //if (selecting) {
-        ////selecting.getImg().clearTint();
-        //selecting.setSelect(false);
-      //}
-      //this.setSelect(true);
-    //});
-
-    // render if ship setup on this Square
-    if (this.#ship) {
-      square.setTint(0xff0000);
-    } else {
-      // Handle hover on square
-      square.on("pointerover", function () {
-        square.setTint(0x44ff44);
-      });
-      square.on("pointerout", function () {
-        square.clearTint();
-      });
-    }
+    if (this.#ship) this.#img.setTint(0xff0000);
   }
 }

@@ -9,8 +9,6 @@ const WIDTH = 300,
 export default class StartBtn {
   #setupDone;
   #container;
-  #bg;
-  #text;
   #phaser;
 
   constructor(phaser) {
@@ -53,6 +51,4 @@ export default class StartBtn {
       bg.clearTint();
     });
   }
-
-  update() {}
 }
