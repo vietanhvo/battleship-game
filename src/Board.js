@@ -7,19 +7,27 @@ export default class Board {
   #width;
   #height;
   #board; // Store the 2D array of square
-  #phaser;
 
-  constructor(phaser) {
+  constructor() {
     this.#width = config.board.width;
     this.#height = config.board.height;
-    this.#phaser = phaser;
     this.#initialize();
+  }
+
+  // Each sence must call this function first to load img and setup #phaser
+  preload(phaser) {
+    // Load img of Square first
+    phaser.load.image(config.square.name, water);
+    // Setup sence for each square
+    this.#board.map((row) => {
+      return row.map((cell) => {
+        return cell.preload(phaser);
+      });
+    });
   }
 
   // Create the 2D array of Square
   #initialize() {
-    // Load img of Square first
-    this.#phaser.load.image(config.square.name, water);
     // Create 2D array
     this.#board = new Array(this.#width);
 
@@ -31,13 +39,7 @@ export default class Board {
     for (var i = 0; i < this.#width; i++) {
       var yIncrease = 0;
       for (var j = 0; j < this.#height; j++) {
-        this.#board[i][j] = new Square(
-          i,
-          j,
-          40 + xIncrease,
-          50 + yIncrease,
-          this.#phaser
-        );
+        this.#board[i][j] = new Square(i, j, 40 + xIncrease, 50 + yIncrease);
         yIncrease += config.square.height;
       }
       xIncrease += config.square.width;
@@ -69,7 +71,7 @@ export default class Board {
   create() {
     for (var i = 0; i < this.#width; i++) {
       for (var j = 0; j < this.#height; j++) {
-        this.#board[i][j].create(() => this.getSquareSelecting());
+        this.#board[i][j].create();
       }
     }
   }

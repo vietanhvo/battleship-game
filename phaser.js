@@ -1,58 +1,14 @@
 import { config } from "./config.js";
 import Game from "./src/Game.js";
 
-import background from "url:./assets/sky.png";
+import Background from "./src/Scenes/Background.js";
+import SetupScene from "./src/Scenes/SetupScene.js";
+import PlayScene from "./src/Scenes/PlayScene.js";
 
-var battleship;
+var battleship = new Game();
 
-class Background extends Phaser.Scene {
-  constructor() {
-    super("Background");
-  }
-
-  preload() {
-    this.load.image("background", background);
-  }
-
-  create() {
-    // Render background img
-    this.add.image(
-      config.phaser.width / 2,
-      config.phaser.height / 2,
-      "background"
-    );
-  }
-}
-
-class SetupScreen extends Phaser.Scene {
-  constructor() {
-    super({ key: "SetupScreen", active: true });
-  }
-
-  preload() {
-    // Game
-    battleship = new Game(this);
-  }
-
-  create() {
-    // create game
-    battleship.create();
-  }
-
-  update() {
-    battleship.update4Setup();
-  }
-}
-
-class PlayScreen extends Phaser.Scene {
-  constructor() {
-    super("PlayScreen");
-  }
-
-  preload() {}
-
-  create() {}
-}
+var Setup = new SetupScene(battleship);
+var Play = new PlayScene(battleship);
 
 var phaserConfig = {
   type: Phaser.AUTO,
@@ -62,7 +18,7 @@ var phaserConfig = {
     width: config.phaser.width,
     height: config.phaser.height,
   },
-  scene: [Background, SetupScreen, PlayScreen],
+  scene: [Background, Setup, Play],
 };
 
 var game = new Phaser.Game(phaserConfig);

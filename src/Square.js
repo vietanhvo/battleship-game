@@ -11,12 +11,16 @@ export default class Square {
   #img;
   #select;
 
-  constructor(x, y, xPos, yPos, phaser) {
+  constructor(x, y, xPos, yPos) {
     this.#ship = this.#shot = this.#select = false;
     this.#x = x;
     this.#y = y;
     this.#xPos = xPos;
     this.#yPos = yPos;
+  }
+
+  // Each sence must call this function first to load img and setup #phaser
+  preload(phaser) {
     this.#phaser = phaser;
   }
 
@@ -50,17 +54,16 @@ export default class Square {
     return this.#shot;
   }
 
-  // Get coordinate;
+  getImg() {
+    return this.#img;
+  }
+
   getX() {
     return this.#x;
   }
 
   getY() {
     return this.#y;
-  }
-
-  getImg() {
-    return this.#img;
   }
 
   // Render square

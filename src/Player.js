@@ -3,10 +3,8 @@ import Ship from "./Ship.js";
 
 export default class Player {
   #ships;
-  #phaser;
 
-  constructor(phaser) {
-    this.#phaser = phaser;
+  constructor() {
     this.#ships = [];
     this.#initializeShips();
   }
@@ -15,11 +13,13 @@ export default class Player {
     // Create ships
     config.shipsArr.map((ship) => {
       const [key, value] = Object.entries(ship)[0];
-      this.#ships.push(new Ship(key, value, this.#phaser));
+      this.#ships.push(new Ship(key, value));
     });
+  }
 
+  preload(phaser) {
     //Preload panel for the setup screen
-    this.#ships.map((ship) => ship.preloadPanel());
+    this.#ships.map((ship) => ship.preload(phaser));
   }
 
   getShips() {

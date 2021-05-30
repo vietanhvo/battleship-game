@@ -8,12 +8,16 @@ export default class Ship {
   #sink; // true if all pos is shooted
   #panel; // the panel for user choose to setup ships
 
-  constructor(name, length, phaser) {
-    this.#phaser = phaser;
+  constructor(name, length) {
     this.#sink = false;
     this.#name = name;
     this.#length = length;
     this.#pos = [];
+  }
+
+  preload(phaser) {
+    this.#phaser = phaser;
+    this.#panel = new ShipPanel(this.#name, this.#phaser);
   }
 
   setPos(listOfSquare) {
@@ -33,14 +37,10 @@ export default class Ship {
   getName() {
     return this.#name;
   }
-  
+
   // Panel for player setup ---------------------------------
   getPanel() {
     return this.#panel;
-  }
-
-  preloadPanel() {
-    this.#panel = new ShipPanel(this.#name, this.#phaser);
   }
 
   // Create in phaser

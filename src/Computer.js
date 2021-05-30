@@ -5,10 +5,8 @@ export default class Computer {
   constructor(phaser) {
     this.#phaser = phaser;
     this.#ships = [];
-    this.#initializeShips();
+    this.#randomSetup();
   }
 
-  #initializeShips() {
-
-  }
+  #randomSetup() {}
 }
