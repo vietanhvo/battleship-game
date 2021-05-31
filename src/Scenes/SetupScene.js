@@ -22,7 +22,7 @@ export default class SetupScreen extends Phaser.Scene {
 
   create() {
     // create game
-    this.#battleship.create();
+    this.#battleship.create4Setup();
 
     this.#directionSwt.create();
     this.#startBtn.create();
@@ -30,7 +30,7 @@ export default class SetupScreen extends Phaser.Scene {
 
   update() {
     var player = this.#battleship.getPlayer();
-    var board = this.#battleship.getBoard();
+    var board = player.getBoard();
 
     var selectingShip = player.getPanelSelecting();
     var selectingSqr = board.getSquareSelecting();
@@ -46,8 +46,7 @@ export default class SetupScreen extends Phaser.Scene {
       player.setupShips(
         selectingShip,
         selectingSqr,
-        this.#directionSwt.getDirection(),
-        board.getBoard()
+        this.#directionSwt.getDirection()
       );
       // Check setup done or not
       player.getShips().some((ship) => ship.getPos().length === 0)

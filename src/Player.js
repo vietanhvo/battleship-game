@@ -1,11 +1,14 @@
 import { config } from "../config.js";
 import Ship from "./Ship.js";
+import Board from "./Board.js";
 
 export default class Player {
   #ships;
+  #board;
 
   constructor() {
     this.#ships = [];
+    this.#board = new Board();
     this.#initializeShips();
   }
 
@@ -19,6 +22,7 @@ export default class Player {
 
   preload(phaser) {
     //Preload panel for the setup screen
+    this.#board.preload(phaser);
     this.#ships.map((ship) => ship.preload(phaser));
   }
 
@@ -26,7 +30,11 @@ export default class Player {
     return this.#ships;
   }
 
-  setupShips(selectShip, selectSquare, direction, board) {
+  getBoard() {
+    return this.#board;
+  }
+
+  setupShips(selectShip, selectSquare, direction) {
     const length = selectShip.getLength();
     const xStart = selectSquare.getX();
     const yStart = selectSquare.getY();
@@ -39,7 +47,7 @@ export default class Player {
       // TODO: VERTICAL
       if (yStart + length <= config.board.height) {
         for (var i = yStart; i < yStart + length; i++) {
-          const square = board[xStart][i];
+          const square = this.#board.getBoard()[xStart][i];
           if (
             square.getShip() &&
             !selectShip.getPos().some((sqr) => sqr == square)
@@ -56,7 +64,7 @@ export default class Player {
       if (xStart + length <= config.board.width) {
         // Check the select square array valid
         for (var i = xStart; i < xStart + length; i++) {
-          const square = board[i][yStart];
+          const square = this.#board.getBoard()[i][yStart];
           if (
             square.getShip() &&
             !selectShip.getPos().some((sqr) => sqr == square)
@@ -83,7 +91,8 @@ export default class Player {
   }
 
   // Create the img for ship panels
-  create() {
+  create4Setup() {
+    this.#board.create4Setup(40, 50);
     var increaseHeight = 50;
     this.#ships.map((ship) => {
       ship.createPanel(

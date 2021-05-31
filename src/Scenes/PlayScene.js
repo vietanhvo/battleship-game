@@ -11,5 +11,8 @@ export default class PlayScene extends Phaser.Scene {
   }
 
   create() {
+    this.#battleship.create4Play();
   }
+
+  update() {}
 }

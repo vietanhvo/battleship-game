@@ -35,14 +35,10 @@ export default class Board {
       this.#board[i] = new Array(this.#height);
     }
     // Initialize Square
-    var xIncrease = 0;
     for (var i = 0; i < this.#width; i++) {
-      var yIncrease = 0;
       for (var j = 0; j < this.#height; j++) {
-        this.#board[i][j] = new Square(i, j, 40 + xIncrease, 50 + yIncrease);
-        yIncrease += config.square.height;
+        this.#board[i][j] = new Square(i, j);
       }
-      xIncrease += config.square.width;
     }
   }
 
@@ -68,11 +64,15 @@ export default class Board {
     return selectingSqr;
   }
 
-  create() {
+  create4Setup(xStart, yStart) {
+    var xIncrease = 0;
     for (var i = 0; i < this.#width; i++) {
+      var yIncrease = 0;
       for (var j = 0; j < this.#height; j++) {
-        this.#board[i][j].create();
+        this.#board[i][j].create4Setup(xStart + xIncrease, yStart + yIncrease);
+        yIncrease += config.square.width;
       }
+      xIncrease += config.square.width;
     }
   }
 

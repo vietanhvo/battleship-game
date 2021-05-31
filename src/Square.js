@@ -3,20 +3,16 @@ import { config } from "../config.js";
 export default class Square {
   #x;
   #y;
-  #xPos;
-  #yPos;
   #ship;
   #shot;
   #phaser;
   #img;
   #select;
 
-  constructor(x, y, xPos, yPos) {
+  constructor(x, y) {
     this.#ship = this.#shot = this.#select = false;
     this.#x = x;
     this.#y = y;
-    this.#xPos = xPos;
-    this.#yPos = yPos;
   }
 
   // Each sence must call this function first to load img and setup #phaser
@@ -67,10 +63,10 @@ export default class Square {
   }
 
   // Render square
-  create() {
+  create4Setup(xPos, yPos) {
     // Render square
     this.#img = this.#phaser.add
-      .sprite(this.#xPos, this.#yPos, config.square.name)
+      .sprite(xPos, yPos, config.square.name)
       .setInteractive();
     this.#img.on("pointerdown", () => {
       this.setSelect(true);
@@ -81,6 +77,7 @@ export default class Square {
     this.#img.on("pointerout", () => {
       if (!this.#ship) this.#img.clearTint();
     });
+    if (this.#ship) this.#img.setTint(0xff0000);
   }
 
   update4Setup() {
