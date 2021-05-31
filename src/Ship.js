@@ -20,10 +20,31 @@ export default class Ship {
     this.#panel = new ShipPanel(this.#name, this.#phaser);
   }
 
+  #checkPosValid(listOfSquare) {
+    var valid = true;
+    listOfSquare.map((square) => {
+      if (square.getShip() && !this.#pos.some((sqr) => sqr == square)) {
+        // Not valid clear old pos and return false
+        this.#pos = [];
+        return valid = false;
+      }
+    });
+    return valid;
+  }
+
   setPos(listOfSquare) {
+    // Remove old setup
     this.#pos.map((sqr) => sqr.setShip(false));
-    this.#pos = listOfSquare;
-    listOfSquare.map((sqr) => sqr.setShip(true));
+    // Create new setup
+    // Check listOfSquare valid or not
+    if (this.#checkPosValid(listOfSquare)) {
+      // Add pos to ship
+      this.#pos = listOfSquare;
+      // Add ship to square
+      listOfSquare.map((sqr) => sqr.setShip(true));
+      return true;
+    }
+    return false;
   }
 
   getPos() {

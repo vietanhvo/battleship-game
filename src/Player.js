@@ -47,15 +47,7 @@ export default class Player {
       // TODO: VERTICAL
       if (yStart + length <= config.board.height) {
         for (var i = yStart; i < yStart + length; i++) {
-          const square = this.#board.getBoard()[xStart][i];
-          if (
-            square.getShip() &&
-            !selectShip.getPos().some((sqr) => sqr == square)
-          ) {
-            return;
-          }
-
-          arrSquareSetup.push(square);
+          arrSquareSetup.push(this.#board.getBoard()[xStart][i]);
         }
       }
     } else {
@@ -64,15 +56,7 @@ export default class Player {
       if (xStart + length <= config.board.width) {
         // Check the select square array valid
         for (var i = xStart; i < xStart + length; i++) {
-          const square = this.#board.getBoard()[i][yStart];
-          if (
-            square.getShip() &&
-            !selectShip.getPos().some((sqr) => sqr == square)
-          ) {
-            return;
-          }
-
-          arrSquareSetup.push(square);
+          arrSquareSetup.push(this.#board.getBoard()[i][yStart]);
         }
       }
     }

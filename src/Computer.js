@@ -1,12 +1,72 @@
+import Board from "./Board.js";
+import Ship from "./Ship.js";
+import { config } from "../config.js";
+
 export default class Computer {
   #ships;
-  #phaser;
+  #board;
 
-  constructor(phaser) {
-    this.#phaser = phaser;
+  constructor() {
     this.#ships = [];
+    this.#board = new Board();
+    this.#initializeShips();
     this.#randomSetup();
   }
 
-  #randomSetup() {}
+  #initializeShips() {
+    // Create ships
+    config.shipsArr.map((ship) => {
+      const [key, value] = Object.entries(ship)[0];
+      this.#ships.push(new Ship(key, value));
+    });
+  }
+
+  #randomInt(max) {
+    return Math.floor(Math.random() * max);
+  }
+
+  #randomSetup() {
+    // Random the start square and direction -> then check valid
+    const direction = ["HORIZONTAL", "VERTICAL"];
+    const width = this.#board.getWidth();
+    const height = this.#board.getHeight();
+
+    this.#ships.map((ship) => {
+      do {
+        // Random direction
+        const dir = direction[this.#randomInt(2)];
+        var length = ship.getLength();
+        var listOfSquares = [];
+        let randomX, randomY;
+        switch (dir) {
+          case "HORIZONTAL":
+            randomX = this.#randomInt(width + 1 - length);
+            randomY = this.#randomInt(height);
+            // Push the array to listOfSquares
+            for (var i = randomX; i < randomX + length; i++) {
+              listOfSquares.push(this.#board.getBoard()[i][randomY])
+            } 
+            break;
+          case "VERTICAL":
+            randomX = this.#randomInt(width);
+            randomY = this.#randomInt(height + 1 - length);
+            // Push the array to listOfSquares
+            for (var i = randomY; i < randomY + length; i++) {
+              listOfSquares.push(this.#board.getBoard()[randomX][i])
+            } 
+            break;
+        }
+
+      } while (!ship.setPos(listOfSquares));
+    });
+  }
+
+  preload(phaser) {
+    this.#board.preload(phaser);
+    this.#ships.map((ship) => ship.preload(phaser));
+  }
+
+  create() {
+    this.#board.create4Setup(40, 50);
+  }
 }
