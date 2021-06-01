@@ -36,7 +36,7 @@ export default class Player {
   }
 
   lose() {
-    return !this.#ships.some(ship => ship.sink() === false)
+    return !this.#ships.some((ship) => ship.sink() === false);
   }
 
   setupShips(selectShip, selectSquare, direction) {
@@ -87,7 +87,8 @@ export default class Player {
       ship.createPanel(
         this.#ships,
         config.phaser.width - config.ship.width / 2,
-        increaseHeight
+        increaseHeight,
+        scene
       );
       increaseHeight += 40 + config.ship.height;
     });

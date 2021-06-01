@@ -57,26 +57,28 @@ export default class ShipPanel {
   }
 
   // Create in phaser
-  create(listOfShips, x, y) {
+  create(listOfShips, x, y, scene) {
     this.#panel = this.#phaser.add
       .sprite(x, y, this.#name)
       .setInteractive()
       .setFrame(1);
-    this.#panel.on("pointerdown", () => {
-      // ships are not selected must be setSelect to false
-      var selectingShip;
-      listOfShips.map((ship) => {
-        if (ship.getPanel().getSelect()) return (selectingShip = ship);
+    if (scene === "Setup") {
+      this.#panel.on("pointerdown", () => {
+        // ships are not selected must be setSelect to false
+        var selectingShip;
+        listOfShips.map((ship) => {
+          if (ship.getPanel().getSelect()) return (selectingShip = ship);
+        });
+
+        if (selectingShip && selectingShip.getName() !== this.#name) {
+          selectingShip.getPanel().getImg().setFrame(1);
+          selectingShip.getPanel().setSelect(false);
+        }
+
+        this.setSelect(true);
+        this.#panel.setFrame(2);
       });
-
-      if (selectingShip && selectingShip.getName() !== this.#name) {
-        selectingShip.getPanel().getImg().setFrame(1);
-        selectingShip.getPanel().setSelect(false);
-      }
-
-      this.setSelect(true);
-      this.#panel.setFrame(2);
-    });
+    }
     this.#panel.on("pointerout", () => {
       if (!this.#select) {
         this.#panel.setFrame(1);

@@ -68,8 +68,12 @@ export default class Square {
     this.#img = this.#phaser.add
       .sprite(xPos, yPos, config.square.name)
       .setInteractive();
+    if (scene === "Player") {
+      if (this.#ship) this.#img.setTint(0xff0000);
+      return;
+    }
     this.#img.on("pointerdown", () => {
-      if (scene === "Play") {
+      if (scene === "Computer") {
         this.shoot();
         if (callback) callback();
       } else {
@@ -93,7 +97,7 @@ export default class Square {
       case "Setup":
         if (this.#ship) this.#img.setTint(0xff0000);
         break;
-      case "Play":
+      case "Computer":
         if (this.#shoot) {
           this.#ship
             ? this.#img.setTint(0xff0000)

@@ -45,19 +45,18 @@ export default class Computer {
             randomY = this.#randomInt(height);
             // Push the array to listOfSquares
             for (var i = randomX; i < randomX + length; i++) {
-              listOfSquares.push(this.#board.getBoard()[i][randomY])
-            } 
+              listOfSquares.push(this.#board.getBoard()[i][randomY]);
+            }
             break;
           case "VERTICAL":
             randomX = this.#randomInt(width);
             randomY = this.#randomInt(height + 1 - length);
             // Push the array to listOfSquares
             for (var i = randomY; i < randomY + length; i++) {
-              listOfSquares.push(this.#board.getBoard()[randomX][i])
-            } 
+              listOfSquares.push(this.#board.getBoard()[randomX][i]);
+            }
             break;
         }
-
       } while (!ship.setPos(listOfSquares));
     });
   }
@@ -67,7 +66,7 @@ export default class Computer {
   }
 
   lose() {
-    return !this.#ships.some(ship => ship.sink() === false)
+    return !this.#ships.some((ship) => ship.sink() === false);
   }
 
   preload(phaser) {
@@ -77,6 +76,16 @@ export default class Computer {
 
   create(scene) {
     this.#board.create(40, 50, scene, this.#name);
+    var increaseHeight = 50;
+    this.#ships.map((ship) => {
+      ship.createPanel(
+        this.#ships,
+        config.phaser.width - config.ship.width / 2,
+        increaseHeight,
+        scene
+      );
+      increaseHeight += 40 + config.ship.height;
+    });
   }
 
   update(scene) {

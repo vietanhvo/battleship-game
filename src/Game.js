@@ -22,8 +22,11 @@ export default class Game {
       case "Setup":
         this.#player.create(scene);
         break;
-      case "Play":
+      case "Computer":
         this.#computer.create(scene);
+        break;
+      case "Player":
+        this.#player.create(scene);
         break;
     }
   }

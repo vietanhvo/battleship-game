@@ -3,12 +3,14 @@ import Game from "./src/Game.js";
 
 import Background from "./src/Scenes/Background.js";
 import SetupScene from "./src/Scenes/SetupScene.js";
-import PlayScene from "./src/Scenes/PlayScene.js";
+import ComputerScene from "./src/Scenes/ComputerScene.js";
+import PlayerScene from "./src/Scenes/PlayerScene.js";
 
 var battleship = new Game();
 
 var Setup = new SetupScene(battleship);
-var Play = new PlayScene(battleship);
+var Computer = new ComputerScene(battleship);
+var Player = new PlayerScene(battleship);
 
 var phaserConfig = {
   type: Phaser.AUTO,
@@ -18,7 +20,7 @@ var phaserConfig = {
     width: config.phaser.width,
     height: config.phaser.height,
   },
-  scene: [Background, Setup, Play],
+  scene: [Background, Setup, Computer, Player],
 };
 
 var game = new Phaser.Game(phaserConfig);

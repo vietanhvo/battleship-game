@@ -67,8 +67,8 @@ export default class Ship {
   }
 
   // Create in phaser
-  createPanel(listOfShips, x, y) {
-    this.#panel.create(listOfShips, x, y);
+  createPanel(listOfShips, x, y, scene) {
+    this.#panel.create(listOfShips, x, y, scene);
   }
   // --------------------------------------------------------
 }
