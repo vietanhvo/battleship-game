@@ -63,7 +63,7 @@ export default class Square {
   }
 
   // Render square
-  create(xPos, yPos, scene, playerName, callback) {
+  create(xPos, yPos, scene, playerName) {
     // Render square
     this.#img = this.#phaser.add
       .sprite(xPos, yPos, config.square.name)
@@ -75,7 +75,10 @@ export default class Square {
     this.#img.on("pointerdown", () => {
       if (scene === "Computer") {
         this.shoot();
-        if (callback) callback();
+        //this.#phaser.scene.switch("PlayerScene");
+        this.#phaser.time.delayedCall(3000, () =>
+          this.#phaser.scene.switch("PlayerScene")
+        );
       } else {
         this.setSelect(true);
       }

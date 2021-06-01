@@ -52,7 +52,7 @@ export default class StartBtn {
     });
 
     this.#container.on("pointerdown", () => {
-      if (this.#setupDone) this.#phaser.scene.start("PlayerScene");
+      if (this.#setupDone) this.#phaser.scene.start("ComputerScene");
     });
   }
 }

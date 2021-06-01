@@ -21,6 +21,6 @@ export default class ComputerScene extends Phaser.Scene {
 
     if (computer.lose()) return;
 
-    this.#battleship.getComputer().update(this.#name);
+    computer.update(this.#name);
   }
 }
