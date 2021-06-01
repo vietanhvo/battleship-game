@@ -4,13 +4,13 @@ export default class Square {
   #x;
   #y;
   #ship;
-  #shot;
+  #shoot;
   #phaser;
   #img;
   #select;
 
   constructor(x, y) {
-    this.#ship = this.#shot = this.#select = false;
+    this.#ship = this.#shoot = this.#select = false;
     this.#x = x;
     this.#y = y;
   }
@@ -42,12 +42,12 @@ export default class Square {
   }
 
   // Shot this square
-  shot() {
-    this.#shot = true;
+  shoot() {
+    this.#shoot = true;
   }
 
-  getShot() {
-    return this.#shot;
+  getShoot() {
+    return this.#shoot;
   }
 
   getImg() {
@@ -63,24 +63,43 @@ export default class Square {
   }
 
   // Render square
-  create4Setup(xPos, yPos) {
+  create(xPos, yPos, scene, playerName, callback) {
     // Render square
     this.#img = this.#phaser.add
       .sprite(xPos, yPos, config.square.name)
       .setInteractive();
     this.#img.on("pointerdown", () => {
-      this.setSelect(true);
+      if (scene === "Play") {
+        this.shoot();
+        if (callback) callback();
+      } else {
+        this.setSelect(true);
+      }
     });
-    this.#img.on("pointerover", () => {
-      if (!this.#ship) this.#img.setTint(0x44ff44);
-    });
-    this.#img.on("pointerout", () => {
-      if (!this.#ship) this.#img.clearTint();
-    });
-    if (this.#ship) this.#img.setTint(0xff0000);
+    if (this.#ship && playerName === "Player") {
+      this.#img.setTint(0xff0000);
+    } else {
+      this.#img.on("pointerover", () => {
+        this.#img.setTint(0x44ff44);
+      });
+      this.#img.on("pointerout", () => {
+        this.#img.clearTint();
+      });
+    }
   }
 
-  update4Setup() {
-    if (this.#ship) this.#img.setTint(0xff0000);
+  update(scene) {
+    switch (scene) {
+      case "Setup":
+        if (this.#ship) this.#img.setTint(0xff0000);
+        break;
+      case "Play":
+        if (this.#shoot) {
+          this.#ship
+            ? this.#img.setTint(0xff0000)
+            : this.#img.setTint(0x808080);
+        }
+        break;
+    }
   }
 }

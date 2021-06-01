@@ -5,11 +5,9 @@ export default class Ship {
   #length; // length of the board
   #phaser;
   #pos; // Array[Square, Square, ...]. The coordianate of ship is belong to this Square
-  #sink; // true if all pos is shooted
   #panel; // the panel for user choose to setup ships
 
   constructor(name, length) {
-    this.#sink = false;
     this.#name = name;
     this.#length = length;
     this.#pos = [];
@@ -26,7 +24,7 @@ export default class Ship {
       if (square.getShip() && !this.#pos.some((sqr) => sqr == square)) {
         // Not valid clear old pos and return false
         this.#pos = [];
-        return valid = false;
+        return (valid = false);
       }
     });
     return valid;
@@ -57,6 +55,10 @@ export default class Ship {
 
   getName() {
     return this.#name;
+  }
+
+  sink() {
+    return !this.#pos.some((sqr) => sqr.getShoot() === false);
   }
 
   // Panel for player setup ---------------------------------

@@ -1,8 +1,9 @@
 export default class PlayScene extends Phaser.Scene {
   #battleship;
+  #name = "Play";
 
   constructor(battleship) {
-    super("PlayScreen");
+    super("PlayScene");
     this.#battleship = battleship;
   }
 
@@ -11,8 +12,16 @@ export default class PlayScene extends Phaser.Scene {
   }
 
   create() {
-    this.#battleship.create4Play();
+    this.#battleship.create(this.#name);
   }
 
-  update() {}
+  update() {
+    //this.#battleship.getComputer().getBoard().moveToBack();
+    var computer = this.#battleship.getComputer();
+    var player = this.#battleship.getPlayer();
+
+    if (computer.lose() || player.lose()) return;
+
+    this.#battleship.getComputer().update(this.#name);
+  }
 }

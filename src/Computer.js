@@ -5,6 +5,7 @@ import { config } from "../config.js";
 export default class Computer {
   #ships;
   #board;
+  #name = "Computer";
 
   constructor() {
     this.#ships = [];
@@ -61,12 +62,24 @@ export default class Computer {
     });
   }
 
+  getBoard() {
+    return this.#board;
+  }
+
+  lose() {
+    return !this.#ships.some(ship => ship.sink() === false)
+  }
+
   preload(phaser) {
     this.#board.preload(phaser);
     this.#ships.map((ship) => ship.preload(phaser));
   }
 
-  create() {
-    this.#board.create4Setup(40, 50);
+  create(scene) {
+    this.#board.create(40, 50, scene, this.#name);
+  }
+
+  update(scene) {
+    this.#board.update(scene);
   }
 }

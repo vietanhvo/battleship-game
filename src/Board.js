@@ -64,26 +64,35 @@ export default class Board {
     return selectingSqr;
   }
 
-  create4Setup(xStart, yStart) {
+  create(xStart, yStart, scene, playerName) {
     var xIncrease = 0;
     for (var i = 0; i < this.#width; i++) {
       var yIncrease = 0;
       for (var j = 0; j < this.#height; j++) {
-        this.#board[i][j].create4Setup(xStart + xIncrease, yStart + yIncrease);
+        this.#board[i][j].create(
+          xStart + xIncrease,
+          yStart + yIncrease,
+          scene,
+          playerName,
+          () => this.moveToBack()
+        );
         yIncrease += config.square.width;
       }
       xIncrease += config.square.width;
     }
   }
 
-  update4Setup() {
-    // Get the square which is selected
-    var selectingSqr = this.getSquareSelecting();
+  moveToBack() {
+    this.#board.map((row) => {
+      row.map((cell) => cell.getImg().setDepth(-1));
+    });
+  }
 
+  update(scene) {
     for (var i = 0; i < this.#width; i++) {
       for (var j = 0; j < this.#height; j++) {
         // Render each square
-        this.#board[i][j].update4Setup(selectingSqr);
+        this.#board[i][j].update(scene);
       }
     }
   }

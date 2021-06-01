@@ -5,6 +5,7 @@ import Board from "./Board.js";
 export default class Player {
   #ships;
   #board;
+  #name = "Player";
 
   constructor() {
     this.#ships = [];
@@ -32,6 +33,10 @@ export default class Player {
 
   getBoard() {
     return this.#board;
+  }
+
+  lose() {
+    return !this.#ships.some(ship => ship.sink() === false)
   }
 
   setupShips(selectShip, selectSquare, direction) {
@@ -75,8 +80,8 @@ export default class Player {
   }
 
   // Create the img for ship panels
-  create4Setup() {
-    this.#board.create4Setup(40, 50);
+  create(scene) {
+    this.#board.create(40, 50, scene, this.#name); // false mean not computer
     var increaseHeight = 50;
     this.#ships.map((ship) => {
       ship.createPanel(

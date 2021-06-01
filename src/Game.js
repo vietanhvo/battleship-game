@@ -17,20 +17,22 @@ export default class Game {
     this.#computer.preload(scene);
   }
 
+  create(scene) {
+    switch (scene) {
+      case "Setup":
+        this.#player.create(scene);
+        break;
+      case "Play":
+        this.#computer.create(scene);
+        break;
+    }
+  }
+
   getPlayer() {
     return this.#player;
   }
 
   getComputer() {
     return this.#computer;
-  }
-
-  create4Setup() {
-    this.#player.create4Setup();
-  }
-
-  create4Play() {
-    //this.#player.create4Setup();
-    this.#computer.create();
   }
 }

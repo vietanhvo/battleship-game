@@ -1,14 +1,15 @@
 import DirectionSwt from "../controller_UI/DirectionSwt.js";
 import StartBtn from "../controller_UI/StartBtn.js";
 
-export default class SetupScreen extends Phaser.Scene {
+export default class SetupScene extends Phaser.Scene {
   #battleship;
   // Control UI
   #directionSwt;
   #startBtn;
+  #name = "Setup";
 
   constructor(battleship) {
-    super({ key: "SetupScreen", active: true });
+    super({ key: "SetupScene", active: true });
     this.#battleship = battleship;
   }
 
@@ -22,7 +23,7 @@ export default class SetupScreen extends Phaser.Scene {
 
   create() {
     // create game
-    this.#battleship.create4Setup();
+    this.#battleship.create(this.#name);
 
     this.#directionSwt.create();
     this.#startBtn.create();
@@ -39,7 +40,8 @@ export default class SetupScreen extends Phaser.Scene {
       selectingSqr.setSelect(false);
     }
 
-    board.update4Setup();
+    //board.getBoard().map(row => {row.map(cell => ce)})
+    board.update(this.#name);
 
     // Handle all thing setup board
     if (selectingShip && selectingSqr) {
