@@ -1,6 +1,7 @@
+// ComputerScene in player's turn
 export default class ComputerScene extends Phaser.Scene {
   #battleship;
-  #name = "Computer";
+  #name = "ComputerScene";
 
   constructor(battleship) {
     super("ComputerScene");

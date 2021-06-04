@@ -6,7 +6,7 @@ export default class SetupScene extends Phaser.Scene {
   // Control UI
   #directionSwt;
   #startBtn;
-  #name = "Setup";
+  #name = "SetupScene";
 
   constructor(battleship) {
     super({ key: "SetupScene", active: true });

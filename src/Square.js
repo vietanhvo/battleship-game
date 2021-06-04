@@ -63,27 +63,30 @@ export default class Square {
   }
 
   // Render square
-  create(xPos, yPos, scene, playerName) {
+  create(xPos, yPos, scene, player, swapTurn) {
     // Render square
     this.#img = this.#phaser.add
       .sprite(xPos, yPos, config.square.name)
       .setInteractive();
-    if (scene === "Player") {
+    if (scene === "PlayerScene") {
       if (this.#ship) this.#img.setTint(0xff0000);
       return;
     }
     this.#img.on("pointerdown", () => {
-      if (scene === "Computer") {
-        this.shoot();
-        //this.#phaser.scene.switch("PlayerScene");
-        this.#phaser.time.delayedCall(3000, () =>
-          this.#phaser.scene.switch("PlayerScene")
-        );
-      } else {
+      if (scene === "ComputerScene") {
+        // If not computer turn => player turn => shoot
+        if (!player.getTurn()) {
+          this.shoot();
+          swapTurn();
+        }
+        this.#phaser.time.delayedCall(3000, () => {
+          this.#phaser.scene.switch("PlayerScene");
+        });
+      } else if (scene === "SetupScene") {
         this.setSelect(true);
       }
     });
-    if (this.#ship && playerName === "Player") {
+    if (this.#ship && scene === "PlayerScene") {
       this.#img.setTint(0xff0000);
     } else {
       this.#img.on("pointerover", () => {
@@ -97,13 +100,20 @@ export default class Square {
 
   update(scene) {
     switch (scene) {
-      case "Setup":
+      case "SetupScene":
         if (this.#ship) this.#img.setTint(0xff0000);
         break;
-      case "Computer":
+      case "ComputerScene":
         if (this.#shoot) {
           this.#ship
             ? this.#img.setTint(0xff0000)
+            : this.#img.setTint(0x808080);
+        }
+        break;
+      case "PlayerScene":
+        if (this.#shoot) {
+          this.#ship
+            ? this.#img.setTint(0xd35400)
             : this.#img.setTint(0x808080);
         }
         break;

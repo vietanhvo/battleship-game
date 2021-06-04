@@ -62,7 +62,7 @@ export default class ShipPanel {
       .sprite(x, y, this.#name)
       .setInteractive()
       .setFrame(1);
-    if (scene === "Setup") {
+    if (scene === "SetupScene") {
       this.#panel.on("pointerdown", () => {
         // ships are not selected must be setSelect to false
         var selectingShip;

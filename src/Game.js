@@ -7,9 +7,14 @@ export default class Game {
   #computer;
 
   constructor() {
-    // Create Player
-    this.#player = new Player();
-    this.#computer = new Computer();
+    // Create Player -> pass turn as param
+    this.#player = new Player(true);
+    this.#computer = new Computer(false);
+  }
+
+  swapTurn() {
+    this.#player.swapTurn();
+    this.#computer.swapTurn();
   }
 
   preload(scene) {
@@ -19,14 +24,14 @@ export default class Game {
 
   create(scene) {
     switch (scene) {
-      case "Setup":
+      case "SetupScene":
         this.#player.create(scene);
         break;
-      case "Computer":
-        this.#computer.create(scene);
+      case "ComputerScene":
+        this.#computer.create(scene, () => this.swapTurn());
         break;
-      case "Player":
-        this.#player.create(scene);
+      case "PlayerScene":
+        this.#player.create(scene, () => this.swapTurn());
         break;
     }
   }

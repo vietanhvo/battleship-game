@@ -5,11 +5,12 @@ import Board from "./Board.js";
 export default class Player {
   #ships;
   #board;
-  #name = "Player";
+  #turn;
 
-  constructor() {
+  constructor(turn) {
     this.#ships = [];
     this.#board = new Board();
+    this.#turn = turn;
     this.#initializeShips();
   }
 
@@ -79,9 +80,18 @@ export default class Player {
     return selectingShip;
   }
 
+  // Setter-Getter for turn
+  swapTurn() {
+    this.#turn = !this.#turn;
+  }
+
+  getTurn() {
+    return this.#turn;
+  }
+
   // Create the img for ship panels
-  create(scene) {
-    this.#board.create(40, 50, scene, this.#name); // false mean not computer
+  create(scene, swapTurn) {
+    this.#board.create(40, 50, scene, this, swapTurn);
     var increaseHeight = 50;
     this.#ships.map((ship) => {
       ship.createPanel(

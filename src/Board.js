@@ -64,7 +64,7 @@ export default class Board {
     return selectingSqr;
   }
 
-  create(xStart, yStart, scene, playerName) {
+  create(xStart, yStart, scene, player, swapTurn) {
     var xIncrease = 0;
     for (var i = 0; i < this.#width; i++) {
       var yIncrease = 0;
@@ -73,19 +73,13 @@ export default class Board {
           xStart + xIncrease,
           yStart + yIncrease,
           scene,
-          playerName,
-          () => this.moveToBack()
+          player,
+          swapTurn
         );
         yIncrease += config.square.width;
       }
       xIncrease += config.square.width;
     }
-  }
-
-  moveToBack() {
-    this.#board.map((row) => {
-      row.map((cell) => cell.getImg().setDepth(-1));
-    });
   }
 
   update(scene) {

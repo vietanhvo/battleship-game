@@ -5,11 +5,12 @@ import { config } from "../config.js";
 export default class Computer {
   #ships;
   #board;
-  #name = "Computer";
+  #turn;
 
-  constructor() {
+  constructor(turn) {
     this.#ships = [];
     this.#board = new Board();
+    this.#turn = turn;
     this.#initializeShips();
     this.#randomSetup();
   }
@@ -61,6 +62,14 @@ export default class Computer {
     });
   }
 
+  swapTurn() {
+    this.#turn = !this.#turn;
+  }
+
+  getTurn() {
+    return this.#turn;
+  }
+
   getBoard() {
     return this.#board;
   }
@@ -74,8 +83,8 @@ export default class Computer {
     this.#ships.map((ship) => ship.preload(phaser));
   }
 
-  create(scene) {
-    this.#board.create(40, 50, scene, this.#name);
+  create(scene, swapTurn) {
+    this.#board.create(40, 50, scene, this, swapTurn);
     var increaseHeight = 50;
     this.#ships.map((ship) => {
       ship.createPanel(
