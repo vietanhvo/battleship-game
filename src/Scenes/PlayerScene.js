@@ -16,19 +16,20 @@ export default class PlayerScene extends Phaser.Scene {
     this.#battleship.create(this.#name);
   }
 
-  nextShoot = 0;
   update() {
     var player = this.#battleship.getPlayer();
     var computer = this.#battleship.getComputer();
 
     if (player.lose()) return;
-    //this.shoot();
+    if (computer.getTurn()) this.#shoot();
     computer.update(this.#name);
   }
 
-  shoot() {
-    if (this.nextShoot > this.time.now) return;
+  #shoot() {
     console.log("Shoot");
-    this.nextShoot = this.time.now + 1000;
+
+    // After shoot change to player turn => change scene
+    this.#battleship.swapTurn();
+    setTimeout(() => this.scene.switch("ComputerScene"), 2000);
   }
 }

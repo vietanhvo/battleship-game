@@ -79,9 +79,6 @@ export default class Square {
           this.shoot();
           swapTurn();
         }
-        this.#phaser.time.delayedCall(3000, () => {
-          this.#phaser.scene.switch("PlayerScene");
-        });
       } else if (scene === "SetupScene") {
         this.setSelect(true);
       }

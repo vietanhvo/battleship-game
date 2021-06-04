@@ -23,5 +23,9 @@ export default class ComputerScene extends Phaser.Scene {
     if (computer.lose()) return;
 
     computer.update(this.#name);
+    // Switch screen
+    if (computer.getTurn()) {
+      setTimeout(() => this.scene.switch("PlayerScene"), 2000);
+    }
   }
 }
