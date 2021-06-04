@@ -103,4 +103,8 @@ export default class Player {
       increaseHeight += 40 + config.ship.height;
     });
   }
+
+  update(scene) {
+    this.#board.update(scene);
+  }
 }

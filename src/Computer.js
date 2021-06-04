@@ -62,6 +62,13 @@ export default class Computer {
     });
   }
 
+  shoot(playerBoard) {
+    var randomX = this.#randomInt(10);
+    var randomY = this.#randomInt(10);
+
+    playerBoard.getBoard()[randomX][randomY].shoot();
+  }
+
   swapTurn() {
     this.#turn = !this.#turn;
   }

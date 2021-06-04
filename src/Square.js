@@ -68,10 +68,6 @@ export default class Square {
     this.#img = this.#phaser.add
       .sprite(xPos, yPos, config.square.name)
       .setInteractive();
-    if (scene === "PlayerScene") {
-      if (this.#ship) this.#img.setTint(0xff0000);
-      return;
-    }
     this.#img.on("pointerdown", () => {
       if (scene === "ComputerScene") {
         // If not computer turn => player turn => shoot
