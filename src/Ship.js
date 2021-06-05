@@ -57,7 +57,7 @@ export default class Ship {
     return this.#name;
   }
 
-  sink() {
+  sunk() {
     return !this.#pos.some((sqr) => sqr.getShoot() === false);
   }
 

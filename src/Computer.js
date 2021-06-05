@@ -82,7 +82,7 @@ export default class Computer {
   }
 
   lose() {
-    return !this.#ships.some((ship) => ship.sink() === false);
+    return !this.#ships.some((ship) => ship.sunk() === false);
   }
 
   preload(phaser) {

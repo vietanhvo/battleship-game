@@ -37,7 +37,7 @@ export default class Player {
   }
 
   lose() {
-    return !this.#ships.some((ship) => ship.sink() === false);
+    return !this.#ships.some((ship) => ship.sunk() === false);
   }
 
   setupShips(selectShip, selectSquare, direction) {
