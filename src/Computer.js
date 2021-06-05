@@ -6,6 +6,7 @@ export default class Computer {
   #ships;
   #board;
   #turn;
+  #mode; // HUNT and TARGET
 
   constructor(turn) {
     this.#ships = [];
@@ -13,6 +14,9 @@ export default class Computer {
     this.#turn = turn;
     this.#initializeShips();
     this.#randomSetup();
+
+    // first set mode to HUNT mode
+    this.#mode = "HUNT";
   }
 
   #initializeShips() {
@@ -62,11 +66,79 @@ export default class Computer {
     });
   }
 
-  shoot(playerBoard) {
-    var randomX = this.#randomInt(10);
-    var randomY = this.#randomInt(10);
+  shoot(player) {
+    var opponentBoard = player.getBoard();
+    var opponentShips = player.getShips();
 
-    playerBoard.getBoard()[randomX][randomY].shoot();
+    if (this.#mode === "HUNT") {
+      var highestProba = 0;
+      // Calculate proba
+      opponentBoard.resetProba();
+      opponentShips.map((ship) => {
+        // Don't check ship sunk
+        if (ship.sunk()) return;
+        opponentBoard.getBoard().map((row) => {
+          row.map((cell) => {
+            // TODO: HORIZONTAL
+            // Check if ship placed valid with the width of board first
+            if (cell.getX() + ship.getLength() <= opponentBoard.getWidth()) {
+              // Check all the squares which place ship valid
+              for (let i = 0; i < ship.getLength(); i++) {
+                if (
+                  opponentBoard
+                    .getBoard()
+                    [cell.getX() + i][cell.getY()].getShoot()
+                )
+                  return;
+              }
+              // Valid => then increase proba in each square
+              for (let i = 0; i < ship.getLength(); i++) {
+                opponentBoard
+                  .getBoard()
+                  [cell.getX() + i][cell.getY()].increaseProba();
+              }
+            }
+            // TODO: VERTICAL
+            if (cell.getY() + ship.getLength() <= opponentBoard.getHeight()) {
+              // Check all the squares which place ship valid
+              for (let i = 0; i < ship.getLength(); i++) {
+                if (
+                  opponentBoard
+                    .getBoard()
+                    [cell.getX()][cell.getY() + i].getShoot()
+                )
+                  return;
+              }
+              // Valid => then increase proba in each square
+              for (let i = 0; i < ship.getLength(); i++) {
+                opponentBoard
+                  .getBoard()
+                  [cell.getX()][cell.getY() + i].increaseProba();
+              }
+            }
+
+            // Find the highest proba
+            if (cell.getProba() > highestProba) {
+              highestProba = cell.getProba();
+            }
+          });
+        });
+      });
+
+      // After update probability -> push all highest probability sqr to arr
+      var highestSqr = [];
+      opponentBoard
+        .getBoard()
+        .map((row) =>
+          row.map((cell) =>
+            cell.getProba() === highestProba ? highestSqr.push(cell) : null
+          )
+        );
+
+      //console.log(highestSqr);
+      // Shoot random square in the highestSqr
+      highestSqr[this.#randomInt(highestSqr.length)].shoot();
+    }
   }
 
   swapTurn() {

@@ -26,7 +26,7 @@ export default class PlayerScene extends Phaser.Scene {
   }
 
   #shoot(computer, player) {
-    computer.shoot(player.getBoard());
+    computer.shoot(player);
     player.update(this.#name);
 
     // After shoot change to player turn => change scene

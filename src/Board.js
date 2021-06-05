@@ -64,6 +64,10 @@ export default class Board {
     return selectingSqr;
   }
 
+  resetProba() {
+    this.#board.map((row) => row.map((cell) => cell.resetProba()));
+  }
+
   create(xStart, yStart, scene, player, swapTurn) {
     var xIncrease = 0;
     for (var i = 0; i < this.#width; i++) {

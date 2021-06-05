@@ -8,9 +8,11 @@ export default class Square {
   #phaser;
   #img;
   #select;
+  #probability;
 
   constructor(x, y) {
     this.#ship = this.#shoot = this.#select = false;
+    this.#probability = 0;
     this.#x = x;
     this.#y = y;
   }
@@ -44,6 +46,19 @@ export default class Square {
   // Shot this square
   shoot() {
     this.#shoot = true;
+  }
+
+  // PROBABILITY
+  getProba() {
+    return this.#probability;
+  }
+
+  resetProba() {
+    this.#probability = 0;
+  }
+
+  increaseProba() {
+    this.#probability += 1;
   }
 
   getShoot() {
