@@ -17,7 +17,10 @@ export default class Board {
   // Each sence must call this function first to load img and setup #phaser
   preload(phaser) {
     // Load img of Square first
-    phaser.load.image(config.square.name, water);
+    phaser.load.spritesheet(config.square.name, water, {
+      frameWidth: 48,
+      frameHeight: 48,
+    });
     // Setup sence for each square
     this.#board.map((row) => {
       return row.map((cell) => {

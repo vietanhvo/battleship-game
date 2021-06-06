@@ -79,10 +79,16 @@ export default class Square {
 
   // Render square
   create(xPos, yPos, scene, player, swapTurn) {
+    this.#phaser.anims.create({
+      key: "wave",
+      frames: this.#phaser.anims.generateFrameNumbers(config.square.name),
+      frameRate: 5,
+    });
     // Render square
     this.#img = this.#phaser.add
       .sprite(xPos, yPos, config.square.name)
       .setInteractive();
+    this.#img.play({ key: "wave", repeat: -1 });
     this.#img.on("pointerdown", () => {
       if (scene === "ComputerScene") {
         // If not computer turn => player turn => shoot
