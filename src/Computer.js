@@ -91,37 +91,47 @@ export default class Computer {
             // Check if ship placed valid with the width of board first
             if (cell.getX() + ship.getLength() <= opponentBoard.getWidth()) {
               // Check all the squares which place ship valid
+              let checkValid = true;
               for (let i = 0; i < ship.getLength(); i++) {
                 if (
                   opponentBoard
                     .getBoard()
                     [cell.getX() + i][cell.getY()].getShoot()
-                )
-                  return;
+                ) {
+                  checkValid = false;
+                  break;
+                }
               }
               // Valid => then increase proba in each square
-              for (let i = 0; i < ship.getLength(); i++) {
-                opponentBoard
-                  .getBoard()
-                  [cell.getX() + i][cell.getY()].increaseProba();
+              if (checkValid) {
+                for (let i = 0; i < ship.getLength(); i++) {
+                  opponentBoard
+                    .getBoard()
+                    [cell.getX() + i][cell.getY()].increaseProba();
+                }
               }
             }
             // TODO: VERTICAL
             if (cell.getY() + ship.getLength() <= opponentBoard.getHeight()) {
               // Check all the squares which place ship valid
+              let checkValid = true;
               for (let i = 0; i < ship.getLength(); i++) {
                 if (
                   opponentBoard
                     .getBoard()
                     [cell.getX()][cell.getY() + i].getShoot()
-                )
-                  return;
+                ) {
+                  checkValid = false;
+                  break;
+                }
               }
               // Valid => then increase proba in each square
-              for (let i = 0; i < ship.getLength(); i++) {
-                opponentBoard
-                  .getBoard()
-                  [cell.getX()][cell.getY() + i].increaseProba();
+              if (checkValid) {
+                for (let i = 0; i < ship.getLength(); i++) {
+                  opponentBoard
+                    .getBoard()
+                    [cell.getX()][cell.getY() + i].increaseProba();
+                }
               }
             }
 
@@ -242,6 +252,7 @@ export default class Computer {
 
     //console.log(highestSqr);
     // Shoot random square in the highestSqr
+    console.log(highestProba);
     console.log(highestSqr);
     var randomSqr = highestSqr[this.#randomInt(highestSqr.length)];
     randomSqr.shoot();
