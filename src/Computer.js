@@ -254,7 +254,8 @@ export default class Computer {
     // Shoot random square in the highestSqr
     console.log(highestProba);
     console.log(highestSqr);
-    var randomSqr = highestSqr[this.#randomInt(highestSqr.length)];
+    var randomNum = this.#randomInt(highestSqr.length);
+    var randomSqr = highestSqr[randomNum];
     randomSqr.shoot();
     // Hit a ship => change to target mode
     if (this.#mode === "HUNT" && randomSqr.getShip()) {
