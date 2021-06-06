@@ -57,8 +57,8 @@ export default class Square {
     this.#probability = 0;
   }
 
-  increaseProba() {
-    this.#probability += 1;
+  increaseProba(num) {
+    this.#probability += num;
   }
 
   getShoot() {
