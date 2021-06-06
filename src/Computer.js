@@ -7,9 +7,11 @@ export default class Computer {
   #board;
   #turn;
   #mode; // HUNT and TARGET
+  #sqrTarget; // [Square, Square,...] store all the hit square but not sunk
 
   constructor(turn) {
     this.#ships = [];
+    this.#sqrTarget = [];
     this.#board = new Board();
     this.#turn = turn;
     this.#initializeShips();
@@ -70,10 +72,12 @@ export default class Computer {
     var opponentBoard = player.getBoard();
     var opponentShips = player.getShips();
 
+    // Reset probability before calculate new proba
+    opponentBoard.resetProba();
+
     if (this.#mode === "HUNT") {
       var highestProba = 0;
       // Calculate proba
-      opponentBoard.resetProba();
       opponentShips.map((ship) => {
         // Don't check ship sunk
         if (ship.sunk()) return;
@@ -137,7 +141,69 @@ export default class Computer {
 
       //console.log(highestSqr);
       // Shoot random square in the highestSqr
-      highestSqr[this.#randomInt(highestSqr.length)].shoot();
+      var randomSqr = highestSqr[this.#randomInt(highestSqr.length)];
+      randomSqr.shoot();
+      // Hit a ship => change to target mode
+      if (randomSqr.getShip()) {
+        this.#sqrTarget.push(randomSqr);
+        this.#mode = "TARGET";
+      }
+    } else if (this.#mode === "TARGET") {
+      // Calculate probability for target mode
+      this.#sqrTarget.map((sqr) => {
+        this.#ships.map((ship) => {
+          if (ship.sunk()) return;
+          // TODO: chek horizontal
+          for (let i = sqr.getX(); i > sqr.getX() - ship.getLength(); --i) {
+            // Move to next position if ship not fit the square
+            if (i + ship.getLength() > opponentBoard.getWidth()) continue;
+            // Check if encouter a MISS square -> break loop
+            if (
+              opponentBoard.getBoard()[i][sqr.getY()].getShoot() &&
+              !opponentBoard.getBoard()[i][sqr.getY()].getShip() 
+              //i !== sqr.getX()
+            ) {
+              break;
+            }
+
+            // Increase the probability of square which can place ship but not
+            // shooted
+            for (let j = i; j < i + ship.getLength(); ++j) {
+              if (!opponentBoard.getBoard()[j][sqr.getY()].getShoot()) {
+                opponentBoard.getBoard()[j][sqr.getY()].increaseProba();
+              }
+            }
+
+            // Check if go to the first column -> break loop
+            if (i === 0) break;
+          }
+
+          // TODO: check vertical
+          for (let i = sqr.getY(); i > sqr.getY() - ship.getLength(); --i) {
+            // Move to next position if ship not fit the square
+            if (i + ship.getLength() > opponentBoard.getHeight()) continue;
+            // Check if encouter a MISS square -> break loop
+            if (
+              opponentBoard.getBoard()[sqr.getX()][i].getShoot() &&
+              !opponentBoard.getBoard()[sqr.getX()][i].getShip()
+              //i !== sqr.getY()
+            ) {
+              break;
+            }
+
+            // Increase the probability of square which can place ship but not
+            // shooted
+            for (let j = i; j < i + ship.getLength(); ++j) {
+              if (!opponentBoard.getBoard()[sqr.getX()][j].getShoot()) {
+                opponentBoard.getBoard()[sqr.getX()][j].increaseProba();
+              }
+            }
+
+            // Check if go to the first row -> break loop
+            if (i === 0) break;
+          }
+        });
+      });
     }
   }
 
