@@ -31,7 +31,7 @@ export default class PlayerScene extends Phaser.Scene {
 
     // After shoot change to player turn => change scene
     this.#battleship.swapTurn();
-    setTimeout(() => this.scene.switch("ComputerScene"), 3000);
+    setTimeout(() => this.scene.switch("ComputerScene"), 5000);
     this.scene.pause();
   }
 }

@@ -72,11 +72,15 @@ export default class Computer {
     var opponentBoard = player.getBoard();
     var opponentShips = player.getShips();
 
+    // Store the highest proba and the array of squares have this proba
+    var highestProba = 0;
+    var highestSqr = [];
+
     // Reset probability before calculate new proba
     opponentBoard.resetProba();
 
     if (this.#mode === "HUNT") {
-      var highestProba = 0;
+      console.log("HUNT MODE");
       // Calculate proba
       opponentShips.map((ship) => {
         // Don't check ship sunk
@@ -128,31 +132,13 @@ export default class Computer {
           });
         });
       });
-
-      // After update probability -> push all highest probability sqr to arr
-      var highestSqr = [];
-      opponentBoard
-        .getBoard()
-        .map((row) =>
-          row.map((cell) =>
-            cell.getProba() === highestProba ? highestSqr.push(cell) : null
-          )
-        );
-
-      //console.log(highestSqr);
-      // Shoot random square in the highestSqr
-      var randomSqr = highestSqr[this.#randomInt(highestSqr.length)];
-      randomSqr.shoot();
-      // Hit a ship => change to target mode
-      if (randomSqr.getShip()) {
-        this.#sqrTarget.push(randomSqr);
-        this.#mode = "TARGET";
-      }
     } else if (this.#mode === "TARGET") {
+      console.log("TARGET MODE");
       // Calculate probability for target mode
       this.#sqrTarget.map((sqr) => {
         this.#ships.map((ship) => {
           if (ship.sunk()) return;
+
           // TODO: chek horizontal
           for (let i = sqr.getX(); i > sqr.getX() - ship.getLength(); --i) {
             // Move to next position if ship not fit the square
@@ -160,17 +146,35 @@ export default class Computer {
             // Check if encouter a MISS square -> break loop
             if (
               opponentBoard.getBoard()[i][sqr.getY()].getShoot() &&
-              !opponentBoard.getBoard()[i][sqr.getY()].getShip() 
+              !opponentBoard.getBoard()[i][sqr.getY()].getShip()
               //i !== sqr.getX()
             ) {
               break;
             }
 
+            // Check the square which ship place on is MISS -> break loop
+            var shipValid = true;
+            for (let j = i; j < i + ship.getLength(); ++j) {
+              let sqrCheck = opponentBoard.getBoard()[j][sqr.getY()];
+              // MISS
+              if (sqrCheck.getShoot() && !sqrCheck.getShip()) {
+                shipValid = false;
+                break;
+              }
+            }
+
             // Increase the probability of square which can place ship but not
             // shooted
-            for (let j = i; j < i + ship.getLength(); ++j) {
-              if (!opponentBoard.getBoard()[j][sqr.getY()].getShoot()) {
-                opponentBoard.getBoard()[j][sqr.getY()].increaseProba();
+            if (shipValid) {
+              for (let j = i; j < i + ship.getLength(); ++j) {
+                let sqrCheck = opponentBoard.getBoard()[j][sqr.getY()];
+                if (!sqrCheck.getShoot()) {
+                  sqrCheck.increaseProba();
+                  // Check proba highest or not
+                  if (sqrCheck.getProba() > highestProba) {
+                    highestProba = sqrCheck.getProba();
+                  }
+                }
               }
             }
 
@@ -180,7 +184,7 @@ export default class Computer {
 
           // TODO: check vertical
           for (let i = sqr.getY(); i > sqr.getY() - ship.getLength(); --i) {
-            // Move to next position if ship not fit the square
+            // Go back 1 square if ship not fit the square
             if (i + ship.getLength() > opponentBoard.getHeight()) continue;
             // Check if encouter a MISS square -> break loop
             if (
@@ -191,11 +195,29 @@ export default class Computer {
               break;
             }
 
+            // Check the square which ship place on is MISS -> break loop
+            var shipVerticalValid = true;
+            for (let j = i; j < i + ship.getLength(); ++j) {
+              let sqrCheck = opponentBoard.getBoard()[sqr.getX()][j];
+              // MISS
+              if (sqrCheck.getShoot() && !sqrCheck.getShip()) {
+                shipVerticalValid = false;
+                break;
+              }
+            }
+
             // Increase the probability of square which can place ship but not
             // shooted
-            for (let j = i; j < i + ship.getLength(); ++j) {
-              if (!opponentBoard.getBoard()[sqr.getX()][j].getShoot()) {
-                opponentBoard.getBoard()[sqr.getX()][j].increaseProba();
+            if (shipVerticalValid) {
+              for (let j = i; j < i + ship.getLength(); ++j) {
+                let sqrCheck = opponentBoard.getBoard()[sqr.getX()][j];
+                if (!sqrCheck.getShoot()) {
+                  sqrCheck.increaseProba();
+                  // Check proba highest or not
+                  if (sqrCheck.getProba() > highestProba) {
+                    highestProba = sqrCheck.getProba();
+                  }
+                }
               }
             }
 
@@ -203,7 +225,55 @@ export default class Computer {
             if (i === 0) break;
           }
         });
+
+        // Select the square which has highest proba to shoot and add to
+        // sqrTarget
       });
+    }
+
+    // After update probability -> push all highest probability sqr to arr
+    opponentBoard
+      .getBoard()
+      .map((row) =>
+        row.map((cell) =>
+          cell.getProba() === highestProba ? highestSqr.push(cell) : null
+        )
+      );
+
+    //console.log(highestSqr);
+    // Shoot random square in the highestSqr
+    console.log(highestSqr);
+    var randomSqr = highestSqr[this.#randomInt(highestSqr.length)];
+    randomSqr.shoot();
+    // Hit a ship => change to target mode
+    if (this.#mode === "HUNT" && randomSqr.getShip()) {
+      this.#sqrTarget.push(randomSqr);
+      this.#mode = "TARGET";
+    } else if (this.#mode === "TARGET") {
+      if (randomSqr.getShip()) {
+        this.#sqrTarget.push(randomSqr);
+      }
+
+      // TODO: Check sunk ships and remove to sqrTarget arr
+      opponentShips.map((ship) => {
+        if (ship.sunk()) {
+          console.log("SUNK!");
+          this.#sqrTarget = this.#sqrTarget.filter(
+            (sqr) =>
+              !ship
+                .getPos()
+                .some(
+                  (sunkSqr) =>
+                    sqr.getX() === sunkSqr.getX() &&
+                    sqr.getY() === sunkSqr.getY()
+                )
+          );
+        }
+      });
+
+      if (!this.#sqrTarget.length) {
+        this.#mode = "HUNT";
+      }
     }
   }
 
