@@ -4,35 +4,71 @@ export default class Square {
   #x;
   #y;
   #ship;
-  #shot;
+  #shoot;
   #phaser;
+  #img;
+  #select;
+  #probability;
 
-  constructor(x, y, phaser) {
-    this.#ship = this.#shot = false;
+  constructor(x, y) {
+    this.#ship = this.#shoot = this.#select = false;
+    this.#probability = 0;
     this.#x = x;
     this.#y = y;
+  }
+
+  // Each sence must call this function first to load img and setup #phaser
+  preload(phaser) {
     this.#phaser = phaser;
   }
 
   // Setup ship in this square
-  setShip() {
-    this.#ship = true;
+  setShip(status) {
+    this.#ship = status;
+    if (!status) {
+      this.#img.clearTint();
+    }
   }
 
   getShip() {
     return this.#ship;
   }
 
+  // Select square
+  setSelect(status) {
+    this.#select = status;
+  }
+
+  getSelect() {
+    return this.#select;
+  }
+
   // Shot this square
-  shot() {
-    this.#shot = true;
+  shoot() {
+    this.#shoot = true;
   }
 
-  getShot() {
-    return this.#shot;
+  // PROBABILITY
+  getProba() {
+    return this.#probability;
   }
 
-  // Get coordinate;
+  resetProba() {
+    this.#probability = 0;
+  }
+
+  increaseProba(num) {
+    this.#probability += num;
+  }
+
+  getShoot() {
+    return this.#shoot;
+  }
+
+  getImg() {
+    return this.#img;
+  }
+
   getX() {
     return this.#x;
   }
@@ -42,16 +78,53 @@ export default class Square {
   }
 
   // Render square
-  render() {
+  create(xPos, yPos, scene, player, swapTurn) {
     // Render square
-    var sqr = this.#phaser.add.sprite(this.#x, this.#y, config.square.name).setInteractive();
+    this.#img = this.#phaser.add
+      .sprite(xPos, yPos, config.square.name)
+      .setInteractive();
+    this.#img.on("pointerdown", () => {
+      if (scene === "ComputerScene") {
+        // If not computer turn => player turn => shoot
+        if (!player.getTurn() && !this.#shoot) {
+          this.shoot();
+          swapTurn();
+        }
+      } else if (scene === "SetupScene") {
+        this.setSelect(true);
+      }
+    });
+    if (this.#ship && scene === "PlayerScene") {
+      this.#img.setTint(0x057614);
+    } else if (scene !== "PlayerScene") {
+      this.#img.on("pointerover", () => {
+        this.#img.setTint(0x44ff44);
+      });
+      this.#img.on("pointerout", () => {
+        this.#img.clearTint();
+      });
+    }
+  }
 
-    // Handle hover on square
-    sqr.on("pointerover", function () {
-      sqr.setTint(0x44ff44);
-    });
-    sqr.on("pointerout", function () {
-      sqr.clearTint();
-    });
+  update(scene) {
+    switch (scene) {
+      case "SetupScene":
+        if (this.#ship) this.#img.setTint(0x057614);
+        break;
+      case "ComputerScene":
+        if (this.#shoot) {
+          this.#ship
+            ? this.#img.setTint(0xff0000)
+            : this.#img.setTint(0x808080);
+        }
+        break;
+      case "PlayerScene":
+        if (this.#shoot) {
+          this.#ship
+            ? this.#img.setTint(0xff0000)
+            : this.#img.setTint(0x808080);
+        }
+        break;
+    }
   }
 }

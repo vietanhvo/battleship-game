@@ -24,6 +24,11 @@ export const config = {
   },
   // These 2 objects belong to each other. If change in one, take a look at the
   // other
-  shipLength: [2, 3, 3, 4, 5],
-  shipName: ["ship2", "ship3", "ship32", "ship4", "ship5"],
+  shipsArr: [
+    { ship2: 2 },
+    { ship3: 3 },
+    { ship32: 3 },
+    { ship4: 4 },
+    { ship5: 5 },
+  ],
 };

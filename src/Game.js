@@ -1,27 +1,46 @@
-import Board from "./Board.js";
-import { config } from "../config.js";
+import Player from "./Player.js";
+import Computer from "./Computer.js";
 
 export default class Game {
-  // Array of squares
-  #board;
-  // Array of ships
-  #ships;
-  #phaser;
+  // Player
+  #player;
+  #computer;
 
-  constructor(phaser) {
-    this.#phaser = phaser;
-    // Create the board
-    this.#board = new Board(phaser);
-    // Create ships
-    this.#initializeShips();
+  constructor() {
+    // Create Player -> pass turn as param
+    this.#player = new Player(true);
+    this.#computer = new Computer(false);
   }
 
-  // Initialize total of ships
-  #initializeShips() {
-     
+  swapTurn() {
+    this.#player.swapTurn();
+    this.#computer.swapTurn();
   }
 
-  render() {
-    this.#board.render();
+  preload(scene) {
+    this.#player.preload(scene);
+    this.#computer.preload(scene);
+  }
+
+  create(scene) {
+    switch (scene) {
+      case "SetupScene":
+        this.#player.create(scene);
+        break;
+      case "ComputerScene":
+        this.#computer.create(scene, () => this.swapTurn());
+        break;
+      case "PlayerScene":
+        this.#player.create(scene, () => this.swapTurn());
+        break;
+    }
+  }
+
+  getPlayer() {
+    return this.#player;
+  }
+
+  getComputer() {
+    return this.#computer;
   }
 }
