@@ -86,7 +86,7 @@ export default class Square {
     this.#img.on("pointerdown", () => {
       if (scene === "ComputerScene") {
         // If not computer turn => player turn => shoot
-        if (!player.getTurn()) {
+        if (!player.getTurn() && !this.#shoot) {
           this.shoot();
           swapTurn();
         }
@@ -95,8 +95,8 @@ export default class Square {
       }
     });
     if (this.#ship && scene === "PlayerScene") {
-      this.#img.setTint(0xff0000);
-    } else {
+      this.#img.setTint(0x057614);
+    } else if (scene !== "PlayerScene") {
       this.#img.on("pointerover", () => {
         this.#img.setTint(0x44ff44);
       });
@@ -109,7 +109,7 @@ export default class Square {
   update(scene) {
     switch (scene) {
       case "SetupScene":
-        if (this.#ship) this.#img.setTint(0xff0000);
+        if (this.#ship) this.#img.setTint(0x057614);
         break;
       case "ComputerScene":
         if (this.#shoot) {
@@ -121,7 +121,7 @@ export default class Square {
       case "PlayerScene":
         if (this.#shoot) {
           this.#ship
-            ? this.#img.setTint(0xd35400)
+            ? this.#img.setTint(0xff0000)
             : this.#img.setTint(0x808080);
         }
         break;
