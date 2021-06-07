@@ -11,6 +11,7 @@ export default class SetupScene extends Phaser.Scene {
   constructor(battleship) {
     super({ key: "SetupScene", active: true });
     this.#battleship = battleship;
+    this.#startBtn = new StartBtn();
   }
 
   preload() {
@@ -18,7 +19,7 @@ export default class SetupScene extends Phaser.Scene {
 
     // Preload Control UI
     this.#directionSwt = new DirectionSwt(this);
-    this.#startBtn = new StartBtn(this);
+    this.#startBtn.preload(this);
   }
 
   create() {
@@ -26,7 +27,7 @@ export default class SetupScene extends Phaser.Scene {
     this.#battleship.create(this.#name);
 
     this.#directionSwt.create();
-    this.#startBtn.create();
+    this.#startBtn.create(this.#name);
   }
 
   update() {
@@ -50,7 +51,7 @@ export default class SetupScene extends Phaser.Scene {
         selectingSqr,
         this.#directionSwt.getDirection()
       );
-      // Check setup done or not
+     // Check setup done or not
       player.getShips().some((ship) => ship.getPos().length === 0)
         ? this.#startBtn.setSetupDone(false)
         : this.#startBtn.setSetupDone(true);

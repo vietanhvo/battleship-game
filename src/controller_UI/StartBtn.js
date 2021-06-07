@@ -11,10 +11,8 @@ export default class StartBtn {
   #container;
   #phaser;
 
-  constructor(phaser) {
+  constructor() {
     this.#setupDone = false;
-    this.#phaser = phaser;
-    this.preload();
   }
 
   setSetupDone(done) {
@@ -25,12 +23,13 @@ export default class StartBtn {
     return this.#setupDone;
   }
 
-  preload() {
+  preload(phaser) {
+    this.#phaser = phaser;
     this.#phaser.load.image("btnBackground", btnBackground);
     this.#phaser.load.image("btnText", btnText);
   }
 
-  create() {
+  create(scene) {
     var bg = this.#phaser.add.image(0, 0, "btnBackground").setScale(0.5);
     var text = this.#phaser.add.image(0, 0, "btnText").setScale(0.5);
 
@@ -52,7 +51,19 @@ export default class StartBtn {
     });
 
     this.#container.on("pointerdown", () => {
-      if (this.#setupDone) this.#phaser.scene.start("ComputerScene");
+      if (this.#setupDone) {
+        switch (scene) {
+          case "SetupScene":
+            this.#phaser.scene.start("ComputerScene");
+            break;
+          case "ComputerScene":
+            this.#phaser.scene.start("PlayerScene");
+            break;
+          case "PlayerScene":
+            this.#phaser.scene.start("ComputerScene");
+            break;
+        }
+      }
     });
   }
 }
