@@ -46,6 +46,23 @@ export default class Square {
   // Shot this square
   shoot() {
     this.#shoot = true;
+
+    // check if hit a ship explosion
+    if (this.#ship) {
+      this.#img.play({ key: "hit" });
+
+      setTimeout(
+        () => this.#img.setScale(1.4).play({ key: "fire", repeat: -1 }),
+        1500
+      );
+    } else {
+      this.#img.setScale(0.4).play({ key: "miss" });
+
+      setTimeout(
+        () => this.#img.setScale(1).play({ key: "wave", repeat: -1 }),
+        1100
+      );
+    }
   }
 
   // PROBABILITY
@@ -79,16 +96,44 @@ export default class Square {
 
   // Render square
   create(xPos, yPos, scene, player, swapTurn) {
+    // Create wave animation
     this.#phaser.anims.create({
       key: "wave",
       frames: this.#phaser.anims.generateFrameNumbers(config.square.name),
       frameRate: 5,
     });
+
+    // Create hit explosion animation
+    this.#phaser.anims.create({
+      key: "hit",
+      frames: this.#phaser.anims.generateFrameNumbers("hit"),
+      frameRate: 8,
+    });
+
+    // Create hit explosion animation
+    this.#phaser.anims.create({
+      key: "miss",
+      frames: this.#phaser.anims.generateFrameNumbers("miss"),
+      frameRate: 20,
+    });
+
+    // Create fire animation
+    this.#phaser.anims.create({
+      key: "fire",
+      frames: this.#phaser.anims.generateFrameNumbers("fire"),
+      frameRate: 10,
+    });
+
     // Render square
     this.#img = this.#phaser.add
       .sprite(xPos, yPos, config.square.name)
       .setInteractive();
-    this.#img.play({ key: "wave", repeat: -1 });
+    if (this.#ship && this.#shoot) {
+      this.#img.setScale(1.4).play({ key: "fire", repeat: -1 });
+    } else {
+      this.#img.play({ key: "wave", repeat: -1 });
+    }
+
     this.#img.on("pointerdown", () => {
       if (scene === "ComputerScene") {
         // If not computer turn => player turn => shoot
@@ -101,7 +146,7 @@ export default class Square {
       }
     });
     if (this.#ship && scene === "PlayerScene") {
-      this.#img.setTint(0x057614);
+      this.#img.setTint(0x229954);
     } else if (scene !== "PlayerScene") {
       this.#img.on("pointerover", () => {
         this.#img.setTint(0x44ff44);
@@ -115,20 +160,20 @@ export default class Square {
   update(scene) {
     switch (scene) {
       case "SetupScene":
-        if (this.#ship) this.#img.setTint(0x057614);
+        if (this.#ship) this.#img.setTint(0x229954);
         break;
       case "ComputerScene":
         if (this.#shoot) {
           this.#ship
             ? this.#img.setTint(0xff0000)
-            : this.#img.setTint(0x808080);
+            : this.#img.setTint(0x34495e);
         }
         break;
       case "PlayerScene":
         if (this.#shoot) {
           this.#ship
             ? this.#img.setTint(0xff0000)
-            : this.#img.setTint(0x808080);
+            : this.#img.setTint(0x34495e);
         }
         break;
     }

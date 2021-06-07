@@ -2,6 +2,9 @@ import Square from "./Square.js";
 
 import { config } from "../config.js";
 import water from "url:../assets/water.png";
+import hitShip from "url:../assets/explosion/hitShip.png";
+import missShip from "url:../assets/explosion/missShip.png";
+import fire from "url:../assets/explosion/Fire.png";
 
 export default class Board {
   #width;
@@ -21,6 +24,25 @@ export default class Board {
       frameWidth: 48,
       frameHeight: 48,
     });
+
+    // Load anims for explosion when shoot
+    phaser.load.spritesheet("hit", hitShip, {
+      frameWidth: 40,
+      frameHeight: 32,
+    });
+
+    // Load anims for miss when shoot
+    phaser.load.spritesheet("miss", missShip, {
+      frameWidth: 175,
+      frameHeight: 175,
+    });
+
+    // Load anims for fire after hit
+    phaser.load.spritesheet("fire", fire, {
+      frameWidth: 35,
+      frameHeight: 40,
+    });
+
     // Setup sence for each square
     this.#board.map((row) => {
       return row.map((cell) => {
