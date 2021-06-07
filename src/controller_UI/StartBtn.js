@@ -39,7 +39,7 @@ export default class StartBtn {
         text,
       ])
       .setSize(WIDTH / 2, HEIGHT / 2)
-      .setInteractive();
+      .setInteractive({ cursor: "pointer" });
 
     this.#container.on("pointerover", () => {
       if (this.#setupDone) bg.setTint(0x44ff44);

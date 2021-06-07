@@ -127,7 +127,7 @@ export default class Square {
     // Render square
     this.#img = this.#phaser.add
       .sprite(xPos, yPos, config.square.name)
-      .setInteractive();
+      .setInteractive({ cursor: "crosshair" });
     if (this.#ship && this.#shoot) {
       this.#img.setScale(1.4).play({ key: "fire", repeat: -1 });
     } else {

@@ -36,7 +36,7 @@ export default class DirectionSwt {
         config.phaser.height - HEIGHT / 1.5,
         NAME
       )
-      .setInteractive()
+      .setInteractive({ cursor: "move" })
       .setFrame(0);
     this.#img.on("pointerdown", () => {
       this.changeDirection(!this.#direction)

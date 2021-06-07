@@ -51,7 +51,7 @@ export default class SetupScene extends Phaser.Scene {
         selectingSqr,
         this.#directionSwt.getDirection()
       );
-     // Check setup done or not
+      // Check setup done or not
       player.getShips().some((ship) => ship.getPos().length === 0)
         ? this.#startBtn.setSetupDone(false)
         : this.#startBtn.setSetupDone(true);
