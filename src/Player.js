@@ -106,5 +106,6 @@ export default class Player {
 
   update(scene) {
     this.#board.update(scene);
+    this.#ships.map((ship) => ship.update());
   }
 }

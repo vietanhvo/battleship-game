@@ -6,16 +6,20 @@ import ship32 from "url:../../assets/ship/ship32.png";
 import ship4 from "url:../../assets/ship/ship4.png";
 import ship5 from "url:../../assets/ship/ship5.png";
 
+import sunk from "url:../../assets/ship/sunk.png";
+
 export default class ShipPanel {
   #name;
   #phaser;
   #panel;
   #select;
+  #sunk;
 
   constructor(name, phaser) {
     this.#name = name;
     this.#phaser = phaser;
     this.#select = false;
+    this.#sunk = false;
     this.#preloadImg();
   }
 
@@ -38,6 +42,8 @@ export default class ShipPanel {
         shipImg = ship5;
         break;
     }
+    this.#phaser.load.image("sunk", sunk);
+
     this.#phaser.load.spritesheet(this.#name, shipImg, {
       frameWidth: config.ship.width,
       frameHeight: config.ship.height,
@@ -62,6 +68,8 @@ export default class ShipPanel {
       .sprite(x, y, this.#name)
       .setInteractive()
       .setFrame(1);
+    this.#sunk = this.#phaser.add.sprite(x, y, "sunk").setScale(0.25);
+    this.#sunk.visible = false;
     if (scene === "SetupScene") {
       this.#panel.on("pointerdown", () => {
         // ships are not selected must be setSelect to false
@@ -89,5 +97,9 @@ export default class ShipPanel {
         this.#panel.setFrame(0);
       }
     });
+  }
+
+  update(sunk) {
+    if (sunk) this.#sunk.visible = true;
   }
 }

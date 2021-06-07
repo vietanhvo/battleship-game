@@ -71,4 +71,10 @@ export default class Ship {
     this.#panel.create(listOfShips, x, y, scene);
   }
   // --------------------------------------------------------
+
+  update() {
+    if (this.sunk()) {
+      this.#panel.update(true);
+    }
+  }
 }

@@ -335,5 +335,6 @@ export default class Computer {
 
   update(scene) {
     this.#board.update(scene);
+    this.#ships.map((ship) => ship.update());
   }
 }
