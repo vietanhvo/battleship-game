@@ -261,8 +261,8 @@ export default class Computer {
 
     //console.log(highestSqr);
     // Shoot random square in the highestSqr
-    console.log(highestProba);
-    console.log(highestSqr);
+    //console.log(highestProba);
+    //console.log(highestSqr);
 
     var randomSqr = highestSqr[this.#randomInt(highestSqr.length)];
     randomSqr.shoot();

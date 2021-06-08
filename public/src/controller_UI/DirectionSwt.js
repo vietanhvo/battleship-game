@@ -1,7 +1,5 @@
 import { config } from "../../config.js";
 
-import directionSwt from "url:../../assets/UI_Btn/directionSwt.png";
-
 const WIDTH = 54,
   HEIGHT = 54;
 const NAME = "directionSwt";
@@ -15,7 +13,7 @@ export default class DirectionSwt {
     this.#phaser = phaser;
     this.#direction = false; // horizontal by default
     // load img
-    this.#phaser.load.spritesheet(NAME, directionSwt, {
+    this.#phaser.load.spritesheet(NAME, "../../assets/UI_Btn/directionSwt.png", {
       frameWidth: WIDTH,
       frameHeight: HEIGHT,
     });

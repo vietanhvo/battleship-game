@@ -1,4 +1,4 @@
-import background from "url:../../assets/sky.png";
+//import background from "url:../../assets/sky.png";
 import { config } from "../../config.js";
 
 export default class Background extends Phaser.Scene {
@@ -7,7 +7,7 @@ export default class Background extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image("background", background);
+    this.load.image("background", "../../assets/sky.png");
   }
 
   create() {

@@ -13,7 +13,6 @@ export const config = {
   },
   // Square setup
   square: {
-    name: "square",
     width: 50,
     height: 50,
   },

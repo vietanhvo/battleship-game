@@ -1,5 +1,3 @@
-import { config } from "../config.js";
-
 export default class Square {
   #x;
   #y;
@@ -99,7 +97,7 @@ export default class Square {
     // Create wave animation
     this.#phaser.anims.create({
       key: "wave",
-      frames: this.#phaser.anims.generateFrameNumbers(config.square.name),
+      frames: this.#phaser.anims.generateFrameNumbers("square"),
       frameRate: 5,
     });
 
@@ -126,7 +124,7 @@ export default class Square {
 
     // Render square
     this.#img = this.#phaser.add
-      .sprite(xPos, yPos, config.square.name)
+      .sprite(xPos, yPos, "square")
       .setInteractive({ cursor: "crosshair" });
     if (this.#ship && this.#shoot) {
       this.#img.setScale(1.4).play({ key: "fire", repeat: -1 });

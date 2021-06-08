@@ -1,10 +1,6 @@
 import Square from "./Square.js";
 
 import { config } from "../config.js";
-import water from "url:../assets/water.png";
-import hitShip from "url:../assets/explosion/hitShip.png";
-import missShip from "url:../assets/explosion/missShip.png";
-import fire from "url:../assets/explosion/Fire.png";
 
 export default class Board {
   #width;
@@ -20,25 +16,25 @@ export default class Board {
   // Each sence must call this function first to load img and setup #phaser
   preload(phaser) {
     // Load img of Square first
-    phaser.load.spritesheet(config.square.name, water, {
+    phaser.load.spritesheet("square", "../assets/water.png", {
       frameWidth: 48,
       frameHeight: 48,
     });
 
     // Load anims for explosion when shoot
-    phaser.load.spritesheet("hit", hitShip, {
+    phaser.load.spritesheet("hit", "../assets/explosion/hitShip.png", {
       frameWidth: 40,
       frameHeight: 32,
     });
 
     // Load anims for miss when shoot
-    phaser.load.spritesheet("miss", missShip, {
+    phaser.load.spritesheet("miss", "../assets/explosion/missShip.png", {
       frameWidth: 175,
       frameHeight: 175,
     });
 
     // Load anims for fire after hit
-    phaser.load.spritesheet("fire", fire, {
+    phaser.load.spritesheet("fire", "../assets/explosion/Fire.png", {
       frameWidth: 35,
       frameHeight: 40,
     });

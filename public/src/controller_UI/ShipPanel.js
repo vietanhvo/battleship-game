@@ -1,13 +1,5 @@
 import { config } from "../../config.js";
 
-import ship2 from "url:../../assets/ship/ship2.png";
-import ship3 from "url:../../assets/ship/ship3.png";
-import ship32 from "url:../../assets/ship/ship32.png";
-import ship4 from "url:../../assets/ship/ship4.png";
-import ship5 from "url:../../assets/ship/ship5.png";
-
-import sunk from "url:../../assets/ship/sunk.png";
-
 export default class ShipPanel {
   #name;
   #phaser;
@@ -27,22 +19,22 @@ export default class ShipPanel {
     var shipImg;
     switch (this.#name) {
       case "ship2":
-        shipImg = ship2;
+        shipImg = "../../assets/ship/ship2.png";
         break;
       case "ship3":
-        shipImg = ship3;
+        shipImg = "../../assets/ship/ship3.png";
         break;
       case "ship32":
-        shipImg = ship32;
+        shipImg = "../../assets/ship/ship32.png";
         break;
       case "ship4":
-        shipImg = ship4;
+        shipImg = "../../assets/ship/ship4.png";
         break;
       case "ship5":
-        shipImg = ship5;
+        shipImg = "../../assets/ship/ship5.png";
         break;
     }
-    this.#phaser.load.image("sunk", sunk);
+    this.#phaser.load.image("sunk", "../../assets/ship/sunk.png");
 
     this.#phaser.load.spritesheet(this.#name, shipImg, {
       frameWidth: config.ship.width,

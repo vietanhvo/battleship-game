@@ -1,6 +1,3 @@
-import btnBackground from "url:../../assets/UI_Btn/button-bg.png";
-import btnText from "url:../../assets/UI_Btn/button-text.png";
-
 import { config } from "../../config.js";
 
 const WIDTH = 300,
@@ -25,8 +22,8 @@ export default class StartBtn {
 
   preload(phaser) {
     this.#phaser = phaser;
-    this.#phaser.load.image("btnBackground", btnBackground);
-    this.#phaser.load.image("btnText", btnText);
+    this.#phaser.load.image("btnBackground", "../../assets/UI_Btn/button-bg.png");
+    this.#phaser.load.image("btnText", "../../assets/UI_Btn/button-text.png");
   }
 
   create(scene) {

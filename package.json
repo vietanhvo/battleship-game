@@ -1,17 +1,15 @@
 {
   "name": "battleship",
   "scripts": {
-    "build": "parcel build index.html",
-    "start": "parcel serve index.html"
+    "dev": "nodemon app.js",
+    "start": "node app.js"
   },
   "version": "1.0.0",
-  "main": "index.html",
+  "main": "app.js",
   "license": "MIT",
-  "devDependencies": {
-    "@parcel/transformer-image": "2.0.0-beta.3.1",
-    "parcel": "^2.0.0-beta.3.1"
-  },
   "dependencies": {
-    "assets": "^3.0.1"
+    "assets": "^3.0.1",
+    "express": "^4.17.1",
+    "nodemon": "^2.0.7"
   }
 }
