@@ -49,18 +49,19 @@ export default class Square {
     if (this.#ship) {
       this.#img.play({ key: "hit" });
 
-      setTimeout(
-        () => this.#img.setScale(1.4).play({ key: "fire", repeat: -1 }),
-        1500
-      );
+      setTimeout(() => {
+        try {
+          this.#img.setScale(1.4).play({ key: "fire", repeat: -1 });
+        } catch (err) {}
+      }, 1500);
     } else {
       this.#img.setScale(0.4).play({ key: "miss" });
-      //console.log(this.#img.anims.currentAnim.key);
 
-      setTimeout(
-        () => this.#img.setScale(1).play({ key: "wave", repeat: -1 }),
-        1100
-      );
+      setTimeout(() => {
+        try {
+          this.#img.setScale(1).play({ key: "wave", repeat: -1 });
+        } catch (err) {}
+      }, 1100);
     }
   }
 
