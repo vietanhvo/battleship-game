@@ -55,6 +55,7 @@ export default class Square {
       );
     } else {
       this.#img.setScale(0.4).play({ key: "miss" });
+      //console.log(this.#img.anims.currentAnim.key);
 
       setTimeout(
         () => this.#img.setScale(1).play({ key: "wave", repeat: -1 }),
@@ -161,17 +162,12 @@ export default class Square {
         if (this.#ship) this.#img.setTint(0x229954);
         break;
       case "ComputerScene":
-        if (this.#shoot) {
-          this.#ship
-            ? this.#img.setTint(0xff0000)
-            : this.#img.setTint(0x34495e);
-        }
-        break;
       case "PlayerScene":
         if (this.#shoot) {
-          this.#ship
-            ? this.#img.setTint(0xff0000)
-            : this.#img.setTint(0x34495e);
+          this.#img.clearTint();
+          if (!this.#ship && this.#img.anims.currentAnim.key !== "miss") {
+            this.#img.setTint(0x34495e);
+          }
         }
         break;
     }

@@ -28,12 +28,12 @@ export default class PlayerScene extends Phaser.Scene {
 
     if (player.lose()) return;
 
+    player.update(this.#name);
     if (computer.getTurn()) this.#shoot(computer, player);
   }
 
   #shoot(computer, player) {
     computer.shoot(player);
-    player.update(this.#name);
 
     // After shoot change to player turn => change scene
     this.#battleship.swapTurn();
