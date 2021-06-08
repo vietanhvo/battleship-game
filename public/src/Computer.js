@@ -143,7 +143,7 @@ export default class Computer {
         row.map((cell) => {
           if (cell.getShoot()) return;
 
-          cell.increaseProba(this.#randomInt(5));
+          cell.increaseProba(this.#randomInt(4));
 
           // Find the highest proba
           if (cell.getProba() > highestProba) {
