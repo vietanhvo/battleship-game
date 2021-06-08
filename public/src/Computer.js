@@ -80,7 +80,7 @@ export default class Computer {
     opponentBoard.resetProba();
 
     if (this.#mode === "HUNT") {
-      console.log("HUNT MODE");
+      //console.log("HUNT MODE");
       // Calculate proba
       opponentShips.map((ship) => {
         // Don't check ship sunk
@@ -152,31 +152,22 @@ export default class Computer {
         });
       });
     } else if (this.#mode === "TARGET") {
-      console.log("TARGET MODE");
+      //console.log("TARGET MODE");
       // Calculate probability for target mode
       this.#sqrTarget.map((sqr) => {
-        this.#ships.map((ship) => {
+        opponentShips.map((ship) => {
           if (ship.sunk()) return;
 
           // TODO: chek horizontal
           for (let i = sqr.getX(); i > sqr.getX() - ship.getLength(); --i) {
             // Move to next position if ship not fit the square
             if (i + ship.getLength() > opponentBoard.getWidth()) continue;
-            // Check if encouter a MISS square -> break loop
-            if (
-              opponentBoard.getBoard()[i][sqr.getY()].getShoot() &&
-              !opponentBoard.getBoard()[i][sqr.getY()].getShip()
-              //i !== sqr.getX()
-            ) {
-              break;
-            }
-
             // Check the square which ship place on is MISS -> break loop
             let checkValid = true;
             for (let j = i; j < i + ship.getLength(); ++j) {
               let sqrCheck = opponentBoard.getBoard()[j][sqr.getY()];
               // MISS
-              if (sqrCheck.getShoot() && !sqrCheck.getShip()) {
+              if (sqrCheck.getStatus() === "MISS") {
                 checkValid = false;
                 break;
               }
@@ -205,21 +196,12 @@ export default class Computer {
           for (let i = sqr.getY(); i > sqr.getY() - ship.getLength(); --i) {
             // Go back 1 square if ship not fit the square
             if (i + ship.getLength() > opponentBoard.getHeight()) continue;
-            // Check if encouter a MISS square -> break loop
-            if (
-              opponentBoard.getBoard()[sqr.getX()][i].getShoot() &&
-              !opponentBoard.getBoard()[sqr.getX()][i].getShip()
-              //i !== sqr.getY()
-            ) {
-              break;
-            }
-
             // Check the square which ship place on is MISS -> break loop
             let checkValid = true;
             for (let j = i; j < i + ship.getLength(); ++j) {
               let sqrCheck = opponentBoard.getBoard()[sqr.getX()][j];
               // MISS
-              if (sqrCheck.getShoot() && !sqrCheck.getShip()) {
+              if (sqrCheck.getStatus() === "MISS") {
                 checkValid = false;
                 break;
               }
@@ -275,10 +257,12 @@ export default class Computer {
         this.#sqrTarget.push(randomSqr);
       }
 
-      // TODO: Check sunk ships and remove to sqrTarget arr
+      // TODO: Check sunk ships and remove their position out of sqrTarget arr
       opponentShips.map((ship) => {
         if (ship.sunk()) {
-          //console.log("SUNK!");
+          // Clear all hit square to miss square
+          ship.getPos().map((sqr) => sqr.setStatus("MISS"));
+
           this.#sqrTarget = this.#sqrTarget.filter(
             (sqr) =>
               !ship

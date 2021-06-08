@@ -7,9 +7,13 @@ export default class Square {
   #img;
   #select;
   #probability;
+  #status; // MISS, HIT, UNVISITED
 
   constructor(x, y) {
-    this.#ship = this.#shoot = this.#select = false;
+    this.#ship = false;
+    this.#shoot = false;
+    this.#select = false;
+    this.#status = "UNVISITED";
     this.#probability = 0;
     this.#x = x;
     this.#y = y;
@@ -26,6 +30,14 @@ export default class Square {
     if (!status) {
       this.#img.clearTint();
     }
+  }
+
+  setStatus(status) {
+    this.#status = status;
+  }
+
+  getStatus() {
+    return this.#status;
   }
 
   getShip() {
@@ -47,6 +59,8 @@ export default class Square {
 
     // check if hit a ship explosion
     if (this.#ship) {
+      this.#status = "HIT";
+
       this.#img.play({ key: "hit" });
 
       setTimeout(() => {
@@ -55,6 +69,8 @@ export default class Square {
         } catch (err) {}
       }, 1500);
     } else {
+      this.#status = "MISS";
+
       this.#img.setScale(0.4).play({ key: "miss" });
 
       setTimeout(() => {
