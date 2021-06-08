@@ -13,10 +13,14 @@ export default class DirectionSwt {
     this.#phaser = phaser;
     this.#direction = false; // horizontal by default
     // load img
-    this.#phaser.load.spritesheet(NAME, "../../assets/UI_Btn/directionSwt.png", {
-      frameWidth: WIDTH,
-      frameHeight: HEIGHT,
-    });
+    this.#phaser.load.spritesheet(
+      NAME,
+      "../../assets/UI_Btn/directionSwt.png",
+      {
+        frameWidth: WIDTH,
+        frameHeight: HEIGHT,
+      }
+    );
   }
 
   changeDirection(direction) {
@@ -34,10 +38,10 @@ export default class DirectionSwt {
         config.phaser.height - HEIGHT / 1.5,
         NAME
       )
-      .setInteractive({ cursor: "move" })
+      .setInteractive()
       .setFrame(0);
     this.#img.on("pointerdown", () => {
-      this.changeDirection(!this.#direction)
+      this.changeDirection(!this.#direction);
       this.#direction ? this.#img.setFrame(1) : this.#img.setFrame(0);
     });
   }

@@ -58,7 +58,7 @@ export default class ShipPanel {
   create(listOfShips, x, y, scene) {
     this.#panel = this.#phaser.add
       .sprite(x, y, this.#name)
-      .setInteractive({ cursor: "pointer" })
+      .setInteractive()
       .setFrame(1);
     this.#sunk = this.#phaser.add.sprite(x, y, "sunk").setScale(0.25);
     this.#sunk.visible = false;

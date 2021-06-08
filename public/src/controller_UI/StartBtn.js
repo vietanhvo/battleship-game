@@ -22,7 +22,10 @@ export default class StartBtn {
 
   preload(phaser) {
     this.#phaser = phaser;
-    this.#phaser.load.image("btnBackground", "../../assets/UI_Btn/button-bg.png");
+    this.#phaser.load.image(
+      "btnBackground",
+      "../../assets/UI_Btn/button-bg.png"
+    );
     this.#phaser.load.image("btnText", "../../assets/UI_Btn/button-text.png");
   }
 
@@ -36,7 +39,7 @@ export default class StartBtn {
         text,
       ])
       .setSize(WIDTH / 2, HEIGHT / 2)
-      .setInteractive({ cursor: "pointer" });
+      .setInteractive();
 
     this.#container.on("pointerover", () => {
       if (this.#setupDone) bg.setTint(0x44ff44);

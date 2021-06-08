@@ -17,5 +17,6 @@ export default class Background extends Phaser.Scene {
       config.phaser.height / 2,
       "background"
     );
+    this.input.setDefaultCursor("url(../../assets/cursor/blue.cur), pointer");
   }
 }
