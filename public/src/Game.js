@@ -13,8 +13,10 @@ export default class Game {
   }
 
   swapTurn() {
-    this.#player.swapTurn();
-    this.#computer.swapTurn();
+    if (!this.#computer.lose() && !this.#player.lose()) {
+      this.#player.swapTurn();
+      this.#computer.swapTurn();
+    }
   }
 
   preload(scene) {
